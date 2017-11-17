@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\ChangeFaceColour.cs" />
-     <Compile Include="Assets\Scripts\CubeStateManager.cs" />
+     <Compile Include="Assets\Scripts\ColourUtility.cs" />
      <Compile Include="Assets\Scripts\EEGData.cs" />
      <Compile Include="Assets\Scripts\OSC.cs" />
  <Reference Include="UnityEngine.UI">
