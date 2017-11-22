@@ -562,65 +562,65 @@
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
+ <Reference Include="Accord.Audio">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Audio.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.Controls.Audio">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Controls.Audio.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.Controls">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Controls.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.IO">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.IO.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.MachineLearning">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.MachineLearning.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.Math.Core">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Math.Core.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.Math">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Math.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord.Statistics">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Statistics.dll</HintPath>
+ </Reference>
+ <Reference Include="envdte">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/envdte.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.SharpZipLib">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
+ </Reference>
+ <Reference Include="MathNet.Numerics">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/MathNet.Numerics.dll</HintPath>
+ </Reference>
+ <Reference Include="SharpDX.DirectSound">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/SharpDX.DirectSound.dll</HintPath>
+ </Reference>
+ <Reference Include="SharpDX">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/SharpDX.dll</HintPath>
+ </Reference>
+ <Reference Include="stdole">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/stdole.dll</HintPath>
+ </Reference>
+ <Reference Include="System.ComponentModel.DataAnnotations">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/System.ComponentModel.DataAnnotations.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Threading">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/System.Threading.dll</HintPath>
+ </Reference>
+ <Reference Include="ZedGraph">
+ <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/ZedGraph.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.Analytics">
  <HintPath>C:/Users/Yana/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.analytics@1.0.1/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Purchasing">
  <HintPath>C:/Users/Yana/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.purchasing@1.0.1/UnityEngine.Purchasing.dll</HintPath>
- </Reference>
- <Reference Include="System.ComponentModel.DataAnnotations">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/System.ComponentModel.DataAnnotations.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Controls">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Controls.dll</HintPath>
- </Reference>
- <Reference Include="SharpDX.DirectSound">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/SharpDX.DirectSound.dll</HintPath>
- </Reference>
- <Reference Include="ZedGraph">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/ZedGraph.dll</HintPath>
- </Reference>
- <Reference Include="envdte">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/envdte.dll</HintPath>
- </Reference>
- <Reference Include="Accord.IO">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.IO.dll</HintPath>
- </Reference>
- <Reference Include="stdole">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/stdole.dll</HintPath>
- </Reference>
- <Reference Include="Accord.MachineLearning">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.MachineLearning.dll</HintPath>
- </Reference>
- <Reference Include="MathNet.Numerics">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/MathNet.Numerics.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Audio">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Audio.dll</HintPath>
- </Reference>
- <Reference Include="SharpDX">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/SharpDX.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Statistics">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Statistics.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Math.Core">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Math.Core.dll</HintPath>
- </Reference>
- <Reference Include="ICSharpCode.SharpZipLib">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Controls.Audio">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Controls.Audio.dll</HintPath>
- </Reference>
- <Reference Include="Accord.Math">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.Math.dll</HintPath>
- </Reference>
- <Reference Include="Accord">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/Accord.dll</HintPath>
- </Reference>
- <Reference Include="System.Threading">
- <HintPath>C:/Users/Yana/Documents/Eyemole-MindCraft/Assets/Plugins/System.Threading.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

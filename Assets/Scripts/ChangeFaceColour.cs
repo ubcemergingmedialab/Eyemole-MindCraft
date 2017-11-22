@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 using Accord.Audio;
+using VRTK;
 
 public class ChangeFaceColour : MonoBehaviour {
 
@@ -19,6 +20,7 @@ public class ChangeFaceColour : MonoBehaviour {
 	public EEG_CHANNEL channelToRecordFrom = EEG_CHANNEL.TP9;
 	private ArrayList dataBuffer;
 	private int dataBufferLength;
+	private VRTK_InteractableObject interactableObject;
 
 	// Use this for initialization
 	void Start () {
@@ -26,25 +28,29 @@ public class ChangeFaceColour : MonoBehaviour {
 		texture = null;
 		dataBuffer = new ArrayList();
 		dataBufferLength = 0; 
+		interactableObject = GetComponentInParent<VRTK_InteractableObject> ();
+		interactableObject.InteractableObjectUngrabbed += new InteractableObjectEventHandler (StopRecordingData);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
 		//Hold A to record EEG data
-		if (Input.GetKey(KeyCode.A)) {
+
+		if (Input.GetKey(KeyCode.Z) || interactableObject.IsGrabbed()) {
 			RecordData ();
 		}
 
 		//Release A to convert EEG data to cube texture 
-		if (Input.GetKeyUp (KeyCode.A)) {
+		if (Input.GetKeyUp (KeyCode.Z)) {
 			StopRecording ();
 		}
+
 	}
 
 	void StopRecording() {
 
-
+		Debug.Log ("stopped recording");
 		//Need to convert from ArrayList to double[] to use the Accord library 
 		double[] fullConvertedBuffer = dataBuffer.ToArray().Select((object arg) => double.Parse(arg.ToString())).ToArray ();
 
@@ -95,10 +101,14 @@ public class ChangeFaceColour : MonoBehaviour {
 
 	}
 
+	void StopRecordingData(object sender, InteractableObjectEventArgs e) {
+		StopRecording ();
+	}
+
 
 
 	void RecordData() {
-
+		Debug.Log ("recording");
 		dataBuffer.Add (EEGData.eegData[(int)channelToRecordFrom]);
 
 	}
