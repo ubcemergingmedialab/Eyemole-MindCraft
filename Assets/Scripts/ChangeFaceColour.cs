@@ -51,6 +51,7 @@ public class ChangeFaceColour : MonoBehaviour {
 	void StopRecording() {
 
 		Debug.Log ("stopped recording");
+        Debug.Log(dataBuffer.Count.ToString());
 		//Need to convert from ArrayList to double[] to use the Accord library 
 		double[] fullConvertedBuffer = dataBuffer.ToArray().Select((object arg) => double.Parse(arg.ToString())).ToArray ();
 
@@ -95,7 +96,9 @@ public class ChangeFaceColour : MonoBehaviour {
 			//Set the texture 
 			texture = new Texture2D ((int)convertedBuffer.Length / windowSize, numFreqs);
 			texture.SetPixels (spectrogramColours);
+            //material.mainTexture = null;
 			material.SetTexture ("_MainTex", texture);
+            dataBuffer = new ArrayList();
 		}
 
 
@@ -109,7 +112,8 @@ public class ChangeFaceColour : MonoBehaviour {
 
 	void RecordData() {
 		Debug.Log ("recording");
-		dataBuffer.Add (EEGData.eegData[(int)channelToRecordFrom]);
+        Debug.Log(dataBuffer.Count.ToString());
+        dataBuffer.Add (EEGData.eegData[(int)channelToRecordFrom]);
 
 	}
 }
