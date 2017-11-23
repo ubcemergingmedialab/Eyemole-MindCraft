@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class ColourUtility : MonoBehaviour {
 
+	public static double lowestBlue = 0.67222222;
+
+	public static double highestGreen = 0.3111111;
+
+	public static double lowestYellow = 0.18611111;
+	public static double highestRed = 0;
+
 
 	//Returns a color in RGB from HSL values 
 	//Taken from http://geekymonkey.com/Programming/CSharp/RGB2HSL_HSL2RGB.htm
@@ -67,6 +74,20 @@ public class ColourUtility : MonoBehaviour {
 			}
 		}
 		Color rgb = new Color ((float)r, (float)g, (float)b);
+		return rgb;
+	}
+
+	public static Color HSL2BlueGreen(double h, double sl, double l)
+	{
+		double new_h = h * (ColourUtility.lowestBlue - ColourUtility.highestGreen) + highestGreen;
+		Color rgb = ColourUtility.HSL2RGB( 1.0 - new_h, sl, l);
+		return rgb;
+	}
+
+	public static Color HSL2YellowRed(double h, double sl, double l)
+	{
+		double new_h = h * (ColourUtility.lowestYellow);
+		Color rgb = ColourUtility.HSL2RGB( 1.0 - new_h, sl, l);
 		return rgb;
 	}
 }
