@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 114448221292021254}
   - component: {fileID: 114259914890598692}
   - component: {fileID: 114695584420878668}
+  - component: {fileID: 114698157310228484}
   m_Layer: 0
   m_Name: Personality Cube
   m_TagString: Untagged
@@ -619,12 +620,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdc9b97c1436354a814a72071b8b242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordingTime: 5
-  numFreqs: 60
-  windowSize: 128
-  windowOverlap: 10
+  numFreqs: 40
+  windowSize: 256
+  windowOverlap: 25
   alphaCutoff: 8
+  gammaCutoff: 30
   channelToRecordFrom: 1
+  maxTextureWidth: 50
 --- !u!114 &114259914890598692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -654,7 +656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disableWhenIdle: 1
-  touchHighlightColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
+  touchHighlightColor: {r: 0.7721475, g: 0.48253676, b: 0.875, a: 0}
   allowedTouchControllers: 0
   ignoredColliders: []
   isGrabbable: 1
@@ -683,12 +685,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdc9b97c1436354a814a72071b8b242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordingTime: 5
-  numFreqs: 60
-  windowSize: 128
-  windowOverlap: 10
+  numFreqs: 40
+  windowSize: 256
+  windowOverlap: 25
   alphaCutoff: 8
+  gammaCutoff: 30
   channelToRecordFrom: 0
+  maxTextureWidth: 50
 --- !u!114 &114448221292021254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -722,12 +725,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdc9b97c1436354a814a72071b8b242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordingTime: 5
-  numFreqs: 60
-  windowSize: 128
-  windowOverlap: 10
+  numFreqs: 40
+  windowSize: 256
+  windowOverlap: 25
   alphaCutoff: 8
+  gammaCutoff: 30
   channelToRecordFrom: 2
+  maxTextureWidth: 50
 --- !u!114 &114671331714890346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -798,6 +802,17 @@ MonoBehaviour:
   useOverrideButton: 0
   allowedUseControllers: 0
   usingState: 0
+--- !u!114 &114698157310228484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333137825688654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e929d1b36d603bd409e6d4ba30dc07eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114702856204857124
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -820,12 +835,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bdc9b97c1436354a814a72071b8b242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordingTime: 5
-  numFreqs: 60
-  windowSize: 128
-  windowOverlap: 10
+  numFreqs: 40
+  windowSize: 256
+  windowOverlap: 25
   alphaCutoff: 8
+  gammaCutoff: 30
   channelToRecordFrom: 3
+  maxTextureWidth: 50
 --- !u!114 &114983886585721146
 MonoBehaviour:
   m_ObjectHideFlags: 1
