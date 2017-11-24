@@ -10,13 +10,17 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
     private VRTK_InteractableObject interactableObject;
     private double lastEEGreceived;
     private double currentEEGreceived;
+	private Color currentColour;
+	private Color newColour;
 
     // Use this for initialization
     void Start () {
         material = GetComponent<Renderer>().material;
         interactableObject = GetComponentInParent<VRTK_InteractableObject>();
-        lastEEGreceived = 0;
-        currentEEGreceived = 0;
+        lastEEGreceived = 0.0;
+        currentEEGreceived = 0.0;
+		currentColour = material.color;
+		newColour = material.color;
     }
 	
 	// Update is called once per frame
@@ -30,10 +34,12 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
     void RecordData() {
         lastEEGreceived = currentEEGreceived;
         currentEEGreceived = EEGData.eegData[1];
-        if (currentEEGreceived != lastEEGreceived) {
-            Color currentColour = material.color;
-            Color newColour = new Color(1.0f - currentColour.r, 1.0f - currentColour.g, 1.0f - currentColour.b);
-			material.SetColor("_EmissionColor", Color.Lerp(currentColour, newColour, 0.1f));
-        }
+		currentColour = material.color;
+		if (currentEEGreceived != lastEEGreceived) {
+			newColour = new Color (1.0f - currentColour.r, 1.0f - currentColour.g, 1.0f - currentColour.b);
+		} else {
+			newColour = currentColour;
+		}
+		material.SetColor("_EmissionColor", Color.Lerp(currentColour, newColour, 0.01f));
     }
 }

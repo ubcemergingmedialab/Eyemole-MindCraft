@@ -15,7 +15,7 @@ public class ChangeFaceColour : MonoBehaviour {
 	public int windowSize = 128;
 	public int windowOverlap = 10;
 	public int alphaCutoff = 8;
-	public int betaCutoff = 13;
+	public int gammaCutoff = 30;
 	private const int SAMPLE_RATE = 256;
 	public enum EEG_CHANNEL: int {TP9=0, AF7=1, AF8=2, TP10=3};
 	public EEG_CHANNEL channelToRecordFrom = EEG_CHANNEL.TP9;
@@ -59,7 +59,7 @@ public class ChangeFaceColour : MonoBehaviour {
 		ComplexSignal cs = Signal.FromArray (baselineArray, SAMPLE_RATE).ToComplex ();
 		cs.ForwardFourierTransform ();
 		baselinePowerSpectrum = Tools.GetPowerSpectrum (cs.GetChannel (0));
-		EEGStateManager.baselineEEG [(int)channelToRecordFrom] = baselineArray.Average ();
+		CubeStateManager.baselineEEG [(int)channelToRecordFrom] = baselineArray.Average ();
 	}
 
 	void ProcessData() {
@@ -72,7 +72,7 @@ public class ChangeFaceColour : MonoBehaviour {
 		//Convert to dB
 		powerSpectrum = powerSpectrum.Select ((double arg, int index) => (10 * Math.Log10 (arg / baselinePowerSpectrum[index]))).ToArray ();
 
-		// Normalzie values
+		// Normalize values
 		double minPowerSpectrum = (powerSpectrum.Min ());
 		double maxPowerSpectrum = (powerSpectrum.Max ());
 		powerSpectrum = powerSpectrum.Select ((double arg, int index) => (arg - minPowerSpectrum) / (maxPowerSpectrum - minPowerSpectrum)).ToArray ();
@@ -80,7 +80,7 @@ public class ChangeFaceColour : MonoBehaviour {
 		//Pick the color scheme according to the peak frequency - Blue-Green if peak below alpha,
 		//Yellow-Red otherwise 
 		int highestFrequency = Array.IndexOf (powerSpectrum, powerSpectrum.Max ());
-		currentScheme = highestFrequency >= alphaCutoff ? (highestFrequency >= betaCutoff ? COLOUR_SCHEME.YELLOW_RED : COLOUR_SCHEME.PURPLE_RED) : COLOUR_SCHEME.BLUE_GREEN;
+		currentScheme = highestFrequency >= alphaCutoff ? (highestFrequency >= gammaCutoff ? COLOUR_SCHEME.YELLOW_RED : COLOUR_SCHEME.PURPLE_RED) : COLOUR_SCHEME.BLUE_GREEN;
 
 		Color[] spectrogramColours;
 			
