@@ -11,6 +11,8 @@ public class ColourUtility : MonoBehaviour {
 	public static double lowestYellow = 0.18611111;
 	public static double highestRed = 0;
 
+	public static double lowestPurple = 0.72222222;
+
 
 	//Returns a color in RGB from HSL values 
 	//Taken from http://geekymonkey.com/Programming/CSharp/RGB2HSL_HSL2RGB.htm
@@ -79,15 +81,22 @@ public class ColourUtility : MonoBehaviour {
 
 	public static Color HSL2BlueGreen(double h, double sl, double l)
 	{
-		double new_h = h * (ColourUtility.lowestBlue - ColourUtility.highestGreen) + highestGreen;
-		Color rgb = ColourUtility.HSL2RGB( 1.0 - new_h, sl, l);
+		double new_h = (1 - h) * (ColourUtility.lowestBlue - ColourUtility.highestGreen) + highestGreen;
+		Color rgb = ColourUtility.HSL2RGB(new_h, sl, l);
 		return rgb;
 	}
 
 	public static Color HSL2YellowRed(double h, double sl, double l)
 	{
-		double new_h = h * (ColourUtility.lowestYellow);
-		Color rgb = ColourUtility.HSL2RGB( 1.0 - new_h, sl, l);
+		double new_h = (1 - h) * (ColourUtility.lowestYellow);
+		Color rgb = ColourUtility.HSL2RGB(new_h, sl, l);
+		return rgb;
+	}
+
+	public static Color HSL2PurpleRed(double h, double sl, double l)
+	{
+		double new_h = h * (ColourUtility.lowestPurple);
+		Color rgb = ColourUtility.HSL2RGB(new_h, sl, l);
 		return rgb;
 	}
 }

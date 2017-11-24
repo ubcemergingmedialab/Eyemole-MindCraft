@@ -60,8 +60,10 @@
      <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
      <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
      <Compile Include="Assets\Scripts\ChangeFaceColour.cs" />
+     <Compile Include="Assets\Scripts\ChangeFaceColourOnConnection.cs" />
      <Compile Include="Assets\Scripts\ColourUtility.cs" />
      <Compile Include="Assets\Scripts\EEGData.cs" />
+     <Compile Include="Assets\Scripts\EEGStateManager.cs" />
      <Compile Include="Assets\Scripts\OSC.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
      <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />

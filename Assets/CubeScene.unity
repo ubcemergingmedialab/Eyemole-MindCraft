@@ -293,6 +293,22 @@ MonoBehaviour:
     fallbackTypeName: VRTK.SDK_FallbackController
     typeName: VRTK.SDK_SimController
     descriptionIndex: 0
+--- !u!1 &252206472 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1333137825688654, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28,
+    type: 2}
+  m_PrefabInternal: {fileID: 1884827524}
+--- !u!114 &252206484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 252206472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e929d1b36d603bd409e6d4ba30dc07eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &327071095
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,6 +1401,21 @@ Prefab:
     - target: {fileID: 4841926649225142, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114350959808704574, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28,
+        type: 2}
+      propertyPath: touchHighlightColor.r
+      value: 0.7721475
+      objectReference: {fileID: 0}
+    - target: {fileID: 114350959808704574, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28,
+        type: 2}
+      propertyPath: touchHighlightColor.g
+      value: 0.48253676
+      objectReference: {fileID: 0}
+    - target: {fileID: 114350959808704574, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28,
+        type: 2}
+      propertyPath: touchHighlightColor.b
+      value: 0.875
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cbe6c0a5bb6e9e549b07726c0d6b0d28, type: 2}
