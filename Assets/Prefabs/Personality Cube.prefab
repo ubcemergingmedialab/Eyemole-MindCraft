@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 33816748708512486}
   - component: {fileID: 64611852447734108}
   - component: {fileID: 23613397175526648}
+  - component: {fileID: 114461922030128344}
   m_Layer: 0
   m_Name: Bottom
   m_TagString: Untagged
@@ -327,7 +328,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e0771fc9412216c40a7c3fe8d4f499bd, type: 2}
+  - {fileID: 2100000, guid: fe880c704ebbcd7429aa921cca289014, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -361,7 +362,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: bb360384c587fcb4f83f0a65ca3113c6, type: 2}
+  - {fileID: 2100000, guid: 3404cff09d319a94aa973ecbd4b30501, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -622,6 +623,7 @@ MonoBehaviour:
   numFreqs: 60
   windowSize: 128
   windowOverlap: 10
+  alphaCutoff: 8
   channelToRecordFrom: 1
 --- !u!114 &114259914890598692
 MonoBehaviour:
@@ -685,6 +687,7 @@ MonoBehaviour:
   numFreqs: 60
   windowSize: 128
   windowOverlap: 10
+  alphaCutoff: 8
   channelToRecordFrom: 0
 --- !u!114 &114448221292021254
 MonoBehaviour:
@@ -695,6 +698,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18055ba762aa3994f9c10208cd088bc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114461922030128344
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1483459828543578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e816691e5c8775f4eb82d8827147374c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114588399907853720
@@ -712,6 +726,7 @@ MonoBehaviour:
   numFreqs: 60
   windowSize: 128
   windowOverlap: 10
+  alphaCutoff: 8
   channelToRecordFrom: 2
 --- !u!114 &114671331714890346
 MonoBehaviour:
@@ -809,6 +824,7 @@ MonoBehaviour:
   numFreqs: 60
   windowSize: 128
   windowOverlap: 10
+  alphaCutoff: 8
   channelToRecordFrom: 3
 --- !u!114 &114983886585721146
 MonoBehaviour:

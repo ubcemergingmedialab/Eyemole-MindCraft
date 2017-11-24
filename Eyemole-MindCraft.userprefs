@@ -1,9 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ColourUtility.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ChangeFaceColourOnConnection.cs">
     <Files>
-      <File FileName="Assets\Scripts\ChangeFaceColour.cs" Line="15" Column="26" />
-      <File FileName="Assets\Scripts\ColourUtility.cs" Line="11" Column="48" />
+      <File FileName="Assets\Scripts\ChangeFaceColourOnConnection.cs" Line="36" Column="83" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

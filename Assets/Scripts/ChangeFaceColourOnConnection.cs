@@ -33,7 +33,7 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
         if (currentEEGreceived != lastEEGreceived) {
             Color currentColour = material.color;
             Color newColour = new Color(1.0f - currentColour.r, 1.0f - currentColour.g, 1.0f - currentColour.b);
-            material.color = Color.Lerp(currentColour, newColour, 0.1f);
+			material.SetColor("_EmissionColor", Color.Lerp(currentColour, newColour, 0.1f));
         }
     }
 }
