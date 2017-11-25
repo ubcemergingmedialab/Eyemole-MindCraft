@@ -49,6 +49,5 @@ C:\Users\Yana\Documents\Eyemole-MindCraft\Temp\bin\Debug\UnityEngine.UIAutomatio
 C:\Users\Yana\Documents\Eyemole-MindCraft\Temp\bin\Debug\UnityEngine.GoogleAudioSpatializer.xml
 C:\Users\Yana\Documents\Eyemole-MindCraft\Temp\bin\Debug\UnityEngine.HoloLens.xml
 C:\Users\Yana\Documents\Eyemole-MindCraft\Temp\bin\Debug\UnityEngine.SpatialTracking.xml
-C:\Users\Yana\Documents\Eyemole-MindCraft\obj\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache
 C:\Users\Yana\Documents\Eyemole-MindCraft\obj\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\Yana\Documents\Eyemole-MindCraft\obj\Debug\Assembly-CSharp-firstpass.pdb
