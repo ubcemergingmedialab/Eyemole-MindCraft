@@ -10,6 +10,7 @@ using VRTK;
 public class ChangeFaceColour : MonoBehaviour {
 
 	private Texture2D texture;
+	private Texture2D normalMap;
 	private Material material;
 	public int numFreqs = 40;
 	public int windowSize = 128;
@@ -32,8 +33,11 @@ public class ChangeFaceColour : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		material = GetComponent<Renderer> ().material;
+		material.shaderKeywords = new string[1]{"_NORMALMAP"};
 		texture = new Texture2D (numFreqs, maxTextureWidth);
+		normalMap = new Texture2D (numFreqs, maxTextureWidth);
 		material.SetTexture ("_MainTex", texture);
+		material.SetTexture ("_BumpMap", normalMap);
 		dataBuffer = new double[windowSize];
 		baselineArray = new double[windowSize];
 		baselinePowerSpectrum = new double[windowSize];
@@ -100,6 +104,30 @@ public class ChangeFaceColour : MonoBehaviour {
 
 		currentWindow++;
 		texture.Apply();
+
+		//Set the normal map
+
+		float xLeft;
+		float xRight;
+		float yUp;
+		float yDown;
+		float yDelta;
+		float xDelta;
+
+		for (int i = 0; i < numFreqs; i++) {
+
+			int y = (currentWindow % maxTextureWidth);
+			yUp = normalMap.GetPixel (y - 1, i).grayscale;
+			yDown = normalMap.GetPixel (y + 1, i).grayscale;
+			int tempI = (int) Mathf.Clamp (i, 1, numFreqs-2);
+			xLeft = (float) powerSpectrum [tempI-1];
+			xRight = (float)powerSpectrum [tempI + 1];
+			xDelta = ((xLeft-xRight)+1)*0.5f;
+			yDelta = ((yUp-yDown)+1)*0.5f;
+			normalMap.SetPixel (i, y, new Color(xDelta,yDelta,1.0f,yDelta));
+		}
+
+		normalMap.Apply ();
 		
 	}
 

@@ -13,8 +13,8 @@ public class CreateObject : MonoBehaviour {
 	void Start() {
 		canSpawn = true;
 		interactableObject = GetComponent<VRTK_InteractableObject> ();
-		interactableObject.InteractableObjectTouched += new InteractableObjectEventHandler (InstantiatePrefab);
-		interactableObject.InteractableObjectUntouched += new InteractableObjectEventHandler (ReenableSpawning);
+		interactableObject.InteractableObjectGrabbed += new InteractableObjectEventHandler (InstantiatePrefab);
+		interactableObject.InteractableObjectUngrabbed += new InteractableObjectEventHandler (ReenableSpawning);
 	}
 
 	void InstantiatePrefab (object sender, InteractableObjectEventArgs e) {
