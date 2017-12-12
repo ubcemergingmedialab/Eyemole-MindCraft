@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.13273281, g: 0.29515517, b: 0.3295954, a: 1}
+  m_IndirectSpecularColor: {r: 0.13273287, g: 0.29515564, b: 0.32959604, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1574,7 +1574,7 @@ MonoBehaviour:
   autoManageVRSettings: 1
   autoLoadSetup: 1
   setups:
-  - {fileID: 199000299}
+  - {fileID: 589136830}
 --- !u!4 &1389615082
 Transform:
   m_ObjectHideFlags: 0

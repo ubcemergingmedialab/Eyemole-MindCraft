@@ -16,6 +16,7 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
     // Use this for initialization
     void Start () {
         material = GetComponent<Renderer>().material;
+        material.shaderKeywords = new string[1] { "_EMISSION" };
         interactableObject = GetComponentInParent<VRTK_InteractableObject>();
         lastEEGreceived = 0.0;
         currentEEGreceived = 0.0;
