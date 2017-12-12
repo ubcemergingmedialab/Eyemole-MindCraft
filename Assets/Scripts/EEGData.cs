@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 public class EEGData : MonoBehaviour {
 	
@@ -96,6 +97,21 @@ public class EEGData : MonoBehaviour {
 		for (int i = 0; i < 3; i++) {
 			accData[i] = message.GetFloat(i);
 		}
+	}
+
+	public static float GetRelativeAlpha() {
+
+		float avgAlpha = EEGData.alphaData.Average();
+		float avgBeta = EEGData.betaData.Average();
+		float avgGamma = EEGData.gammaData.Average();
+		float avgTheta = EEGData.thetaData.Average();
+		float avgDelta = EEGData.deltaData.Average();
+
+		float relAlpha = avgAlpha / (avgAlpha + avgBeta + avgDelta + avgGamma + avgTheta);
+
+		Debug.Log(relAlpha.ToString());
+
+		return relAlpha;
 	}
 
 }
