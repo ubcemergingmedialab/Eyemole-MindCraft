@@ -92,7 +92,7 @@ public class RaiseTerrain : MonoBehaviour {
 		float[,] heights = terrain.terrainData.GetHeights(terX, terZ, lenx, lenz);
 
 		float rateMultiplier = 1f;
-		if (EEGData.alphaData[1] != 0) {
+		if (EEGData.eegData[1] != 0) {
 			rateMultiplier = GetRelativeAlpha();
 		}
 
@@ -136,7 +136,7 @@ public class RaiseTerrain : MonoBehaviour {
 
 	private float GetRelativeAlpha() {
 
-		float relAlpha = EEGData.GetRelativeAlpha();
+		float relAlpha = EEGData.GetRelativeFrequency(EEGData.EEG_BANDS.ALPHA);
 
 		return relAlpha > alphaThreshold ? relAlpha : ((1f - relAlpha / alphaThreshold) * -1f);
 	}

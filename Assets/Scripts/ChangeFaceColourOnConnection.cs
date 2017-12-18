@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
+using Leap.Unity.Interaction;
 
 public class ChangeFaceColourOnConnection : MonoBehaviour {
 
     private Material material;
     private const int SAMPLE_RATE = 256;
-    private VRTK_InteractableObject interactableObject;
-    private double lastEEGreceived;
+    private VRTK_InteractableObject interactableObject; //For Vive controls
+	private InteractionBehaviour intObj; //For Leap
+	private double lastEEGreceived;
     private double currentEEGreceived;
 	private Color currentColour;
 	private Color newColour;
@@ -18,7 +20,8 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
         material = GetComponent<Renderer>().material;
 		material.shaderKeywords = new string[1] { "_EMISSION" };
 		interactableObject = GetComponentInParent<VRTK_InteractableObject>();
-        lastEEGreceived = 0.0;
+		intObj = GetComponentInParent<InteractionBehaviour>();
+		lastEEGreceived = 0.0;
         currentEEGreceived = 0.0;
 		currentColour = material.color;
 		newColour = material.color;
@@ -27,7 +30,7 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (interactableObject.IsGrabbed()) {
+        if (interactableObject.IsGrabbed() || intObj.isGrasped) {
             RecordData();
         }
     }

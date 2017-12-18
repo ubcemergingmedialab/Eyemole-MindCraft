@@ -21,12 +21,11 @@ public class EEGData : MonoBehaviour {
 	public string museName = "/muse";
 
 	public static float[] eegData;
-	public static float[] alphaData;
-	public static float[] betaData;
-	public static float[] deltaData;
-	public static float[] thetaData;
-	public static float[] gammaData;
 	public static float[] accData;
+
+	public enum EEG_BANDS: int {DELTA=0, THETA=1, ALPHA=2, BETA=3, GAMMA=4};
+
+	public static float[][] freqData;
 	
 	// Script initialization
 	void Start() {	
@@ -36,12 +35,8 @@ public class EEGData : MonoBehaviour {
 		osc = GetComponent<OSC>();
 
 		eegData = new float[4];
-		alphaData = new float[4];
-		betaData = new float[4];
-		thetaData = new float[4];
-		deltaData = new float[4];
-		gammaData = new float[4];
 		accData = new float[3];
+		freqData = new float[5][];
 
 		if (useEEG) osc.SetAddressHandler( museName + "/eeg" , OnReceiveEEG );
 		if (useAlpha) osc.SetAddressHandler( museName + "/elements/alpha_absolute" , OnReceiveAlpha);
@@ -65,31 +60,31 @@ public class EEGData : MonoBehaviour {
 
 	void OnReceiveAlpha(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			alphaData[i] = message.GetFloat(i);
+			freqData[(int) EEG_BANDS.ALPHA][i] = message.GetFloat(i);
 		}
 	}
 
     void OnReceiveBeta(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			betaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.BETA][i] = message.GetFloat(i);
 		}
 	}
 
 	void OnReceiveGamma(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			gammaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.GAMMA][i] = message.GetFloat(i);
 		}
 	}
 
 	void OnReceiveDelta(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			deltaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.DELTA][i] = message.GetFloat(i);
 		}
 	}
 
 	void OnReceiveTheta(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			thetaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.THETA][i] = message.GetFloat(i);
 		}
 	}
 
@@ -99,19 +94,27 @@ public class EEGData : MonoBehaviour {
 		}
 	}
 
-	public static float GetRelativeAlpha() {
+	public static float[] GetAbsoluteFrequency(EEG_BANDS freqBand) {
+		return EEGData.freqData[(int)freqBand];
+	}
 
-		float avgAlpha = EEGData.alphaData.Average();
-		float avgBeta = EEGData.betaData.Average();
-		float avgGamma = EEGData.gammaData.Average();
-		float avgTheta = EEGData.thetaData.Average();
-		float avgDelta = EEGData.deltaData.Average();
+	public static float GetAverage(EEG_BANDS freqBand) {
+		return EEGData.freqData[(int)freqBand].Average();
+	}
 
-		float relAlpha = avgAlpha / (avgAlpha + avgBeta + avgDelta + avgGamma + avgTheta);
+	public static float GetRelativeFrequency(EEG_BANDS freqBand) {
 
-		Debug.Log(relAlpha.ToString());
+		float sumBands = 0f;
 
-		return relAlpha;
+		foreach (EEG_BANDS eegBand in Enum.GetValues(typeof(EEG_BANDS))) {
+			sumBands += EEGData.GetAverage(eegBand);
+		}
+
+		float relFreq = EEGData.GetAverage(freqBand) / sumBands;
+
+		Debug.Log(relFreq.ToString());
+
+		return relFreq;
 	}
 
 }

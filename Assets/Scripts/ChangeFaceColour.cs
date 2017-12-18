@@ -6,6 +6,8 @@ using UnityEngine.Events;
 using System.Linq;
 using Accord.Audio;
 using VRTK;
+using Leap;
+using Leap.Unity.Interaction;
 
 public class ChangeFaceColour : MonoBehaviour {
 
@@ -26,12 +28,16 @@ public class ChangeFaceColour : MonoBehaviour {
 	private double[] dataBuffer;
 	private double[] baselineArray;
 	private double[] baselinePowerSpectrum;
+
 	private VRTK_InteractableObject interactableObject;
+
+	private InteractionBehaviour intObj;
 	private int currentWindow;
 	private int currentEEGCount;
 
 	// Use this for initialization
 	void Start () {
+
 		material = GetComponent<Renderer> ().material;
 		material.shaderKeywords = new string[1]{"_NORMALMAP"};
 		texture = new Texture2D (numFreqs, maxTextureWidth);
@@ -43,8 +49,15 @@ public class ChangeFaceColour : MonoBehaviour {
 		baselinePowerSpectrum = new double[windowSize];
 		currentWindow = 0;
 		currentEEGCount = 0;
+
+		// With Vive / Oculus controllers
 		interactableObject = GetComponentInParent<VRTK_InteractableObject> ();
 		interactableObject.InteractableObjectUngrabbed += new InteractableObjectEventHandler (StopRecordingData);
+
+		// With Leap Motion
+		intObj = GetComponentInParent<InteractionBehaviour> ();
+		intObj.OnGraspEnd += StopRecording;
+
 	}
 	
 	// Update is called once per frame
@@ -52,7 +65,7 @@ public class ChangeFaceColour : MonoBehaviour {
 
 		//Hold the object to record EEG data
 
-		if (interactableObject.IsGrabbed()) {
+		if (interactableObject.IsGrabbed() || intObj.isGrasped) {
 			RecordData ();
 		}
 

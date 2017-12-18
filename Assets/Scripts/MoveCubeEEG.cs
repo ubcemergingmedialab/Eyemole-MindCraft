@@ -11,7 +11,7 @@ public class MoveCubeEEG : MonoBehaviour {
 	void Update () {
 
 		Vector3 currentPosition = cube.transform.position;
-		Vector3 newPosition = new Vector3(currentPosition.x, EEGData.GetRelativeAlpha() * maxHeight, currentPosition.z);
+		Vector3 newPosition = new Vector3(currentPosition.x, EEGData.GetRelativeFrequency(EEGData.EEG_BANDS.ALPHA) * maxHeight, currentPosition.z);
 		cube.transform.position = Vector3.Lerp(currentPosition, newPosition, Time.deltaTime);
 		
 	}
