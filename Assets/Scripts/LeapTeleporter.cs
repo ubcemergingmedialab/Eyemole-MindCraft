@@ -4,6 +4,7 @@ using Leap.Unity;
 
 public class LeapTeleporter : MonoBehaviour {
 
+	public static bool teleportEnabled = false;
 
 	public float rechargeTime = 1f;
 	private float timeLastTeleported;
@@ -78,7 +79,7 @@ public class LeapTeleporter : MonoBehaviour {
 		// Create a Ray from the origin of the index fingertip in the direction that the index finger is pointing
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsLeft);
 
-		if ((hand != null) && IsReadyToTeleport()) {
+		if ((hand != null) && IsReadyToTeleport() && teleportEnabled) {
 
 			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
 			Ray ray = new Ray(index.TipPosition.ToVector3(), index.Direction.ToVector3());
