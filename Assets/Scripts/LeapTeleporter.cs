@@ -4,7 +4,12 @@ using Leap.Unity;
 
 public class LeapTeleporter : MonoBehaviour {
 
-	public bool teleportOnClick = false;
+
+	public float rechargeTime = 1f;
+	private float timeLastTeleported;
+
+	public float maxTeleportDistance = 5f;
+
 	private Detector detector;
 	private LineRenderer rend;
 
@@ -12,6 +17,8 @@ public class LeapTeleporter : MonoBehaviour {
 	public Transform reference;
 
 	void Start() {
+
+		timeLastTeleported = 0f;
 
 		detector = GetComponent<Detector>();
 		rend = GetComponent<LineRenderer>();
@@ -43,20 +50,23 @@ public class LeapTeleporter : MonoBehaviour {
 	public void Update() {
 
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsLeft);
+
 		if (hand != null) {
 			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
 
 			Vector3 tipPosition = index.TipPosition.ToVector3();
 			Vector3 direction = index.Direction.ToVector3();
 
-			rend.SetPositions(new Vector3[2] { tipPosition, tipPosition + direction * 5 });
+			Vector3 oldOrigin = rend.GetPosition(0);
+			Vector3 oldEnd = rend.GetPosition(1);
+
+			rend.SetPositions(new Vector3[2] { Vector3.Lerp(oldOrigin, tipPosition, 0.5f), Vector3.Lerp(oldEnd, tipPosition + direction * maxTeleportDistance, 0.5f) });
 		}
 
 	}
 
 	public void DoClick() {
-
-		Debug.Log("DETECTED");
+		
 
 		// First get the current Transform of the the reference space (i.e. the Play Area, e.g. CameraRig prefab)
 		var t = reference;
@@ -67,7 +77,9 @@ public class LeapTeleporter : MonoBehaviour {
 		
 		// Create a Ray from the origin of the index fingertip in the direction that the index finger is pointing
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsLeft);
-		if (hand != null) {
+
+		if ((hand != null) && IsReadyToTeleport()) {
+
 			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
 			Ray ray = new Ray(index.TipPosition.ToVector3(), index.Direction.ToVector3());
 
@@ -77,7 +89,7 @@ public class LeapTeleporter : MonoBehaviour {
 
 			RaycastHit hitInfo;
 			TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
-			hasGroundTarget = tc.Raycast(ray, out hitInfo, 500f);
+			hasGroundTarget = tc.Raycast(ray, out hitInfo, maxTeleportDistance);
 			dist = hitInfo.distance;
 
 
@@ -90,10 +102,16 @@ public class LeapTeleporter : MonoBehaviour {
 				// i.e. intersectionPoint - headPosOnGround = translateVector
 				// currentReferencePosition + translateVector = finalPosition
 				t.position = t.position + (ray.origin + (ray.direction * dist)) - headPosOnGround;
+				timeLastTeleported = Time.time;
 
 			}
 		}
 
 		DeactivateRenderer();
+	}
+
+	private bool IsReadyToTeleport() {
+		float currentTime = Time.time;
+		return (currentTime - timeLastTeleported) > rechargeTime;
 	}
 }
