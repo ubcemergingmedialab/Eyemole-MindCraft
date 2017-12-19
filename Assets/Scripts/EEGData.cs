@@ -37,6 +37,9 @@ public class EEGData : MonoBehaviour {
 		eegData = new float[4];
 		accData = new float[3];
 		freqData = new float[5][];
+		foreach (EEG_BANDS eegBand in Enum.GetValues(typeof(EEG_BANDS))) {
+			freqData[(int)eegBand] = new float[4];
+		}
 
 		if (useEEG) osc.SetAddressHandler( museName + "/eeg" , OnReceiveEEG );
 		if (useAlpha) osc.SetAddressHandler( museName + "/elements/alpha_absolute" , OnReceiveAlpha);
