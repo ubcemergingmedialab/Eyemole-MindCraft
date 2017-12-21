@@ -6,6 +6,8 @@ using Leap.Unity;
 
 public class RaiseTerrainLeap : MonoBehaviour {
 
+	public static bool raiseEnabled = false;
+
 	// This script will raise the terrain at location under the index finger 
 	// when the index finger is extended 
 	private Detector detector;
@@ -13,6 +15,8 @@ public class RaiseTerrainLeap : MonoBehaviour {
 	public LeapServiceProvider controller;
 
 	public Terrain terrain;
+
+	public float maxRaiseDistance = 5f;
 
 	private int xResolution;
 	private int zResolution;
@@ -83,13 +87,20 @@ public class RaiseTerrainLeap : MonoBehaviour {
 	public void UpdatePointer() {
 
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsRight);
-		if (hand != null) {
-			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
 
-			Vector3 tipPosition = index.TipPosition.ToVector3();
-			Vector3 direction = index.Direction.ToVector3();
+		if (hand != null && raiseEnabled) {
 
-			rend.SetPositions(new Vector3[2] { tipPosition, tipPosition + direction * 5 });
+			ActivateRenderer();
+
+			Vector3 armPosition = hand.Arm.WristPosition.ToVector3();
+			Vector3 armDirection = hand.Arm.Direction.ToVector3();
+
+			Vector3 oldOrigin = rend.GetPosition(0);
+			Vector3 oldEnd = rend.GetPosition(1);
+
+			rend.SetPositions(new Vector3[2] { Vector3.Lerp(oldOrigin, armPosition, Time.deltaTime / Time.fixedDeltaTime), Vector3.Lerp(oldEnd, armPosition + armDirection * maxRaiseDistance, Time.deltaTime / Time.fixedDeltaTime) });
+		} else {
+			DeactivateRenderer();
 		}
 
 	}
@@ -98,62 +109,63 @@ public class RaiseTerrainLeap : MonoBehaviour {
 
 	void RaiseTerrainUnderPointer() {
 
-		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsRight);
-		Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
+		if (raiseEnabled) {
+			Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsRight);
 
-		Vector3 tipPosition = index.TipPosition.ToVector3();
-		Vector3 direction = index.Direction.ToVector3();
+			Vector3 armPosition = hand.Arm.WristPosition.ToVector3();
+			Vector3 armDirection = hand.Arm.Direction.ToVector3();
 
-		Ray ray = new Ray(tipPosition, direction);
+			Ray ray = new Ray(armPosition, armDirection);
 
-		RaycastHit hit;
-		TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
-		bool hasGroundTarget = tc.Raycast(ray, out hit, 500f);
-		Vector3 point = hit.point;
+			RaycastHit hit;
+			TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
+			bool hasGroundTarget = tc.Raycast(ray, out hit, maxRaiseDistance);
+			Vector3 point = hit.point;
 
-		int areax;
-		int areaz;
-		float smoothing;
-		int terX = (int)((point.x / terrain.terrainData.size.x) * xResolution);
-		int terZ = (int)((point.z / terrain.terrainData.size.z) * zResolution);
-		lenx += smooth;
-		lenz += smooth;
-		terX -= (lenx / 2);
-		terZ -= (lenz / 2);
-		if (terX < 0) terX = 0;
-		if (terX > xResolution) terX = xResolution;
-		if (terZ < 0) terZ = 0;
-		if (terZ > zResolution) terZ = zResolution;
+			int areax;
+			int areaz;
+			float smoothing;
+			int terX = (int)((point.x / terrain.terrainData.size.x) * xResolution);
+			int terZ = (int)((point.z / terrain.terrainData.size.z) * zResolution);
+			lenx += smooth;
+			lenz += smooth;
+			terX -= (lenx / 2);
+			terZ -= (lenz / 2);
+			if (terX < 0) terX = 0;
+			if (terX > xResolution) terX = xResolution;
+			if (terZ < 0) terZ = 0;
+			if (terZ > zResolution) terZ = zResolution;
 
-		float[,] heights = terrain.terrainData.GetHeights(terX, terZ, lenx, lenz);
+			float[,] heights = terrain.terrainData.GetHeights(terX, terZ, lenx, lenz);
 
-		float rateMultiplier = 1f;
-		if (EEGData.eegData[1] != 0) {
-			rateMultiplier = GetRelativeAlpha();
-		}
+			float rateMultiplier = 1f;
+			if (EEGData.eegData[1] != 0) {
+				rateMultiplier = GetRelativeAlpha();
+			}
 
-		float y = heights[lenx / 2, lenz / 2];
-		y += maxRaiseRate * rateMultiplier;
-		for (smoothing = 1; smoothing < smooth + 1; smoothing++) {
-			float multiplier = smoothing / smooth;
-			for (areax = (int)(smoothing / 2); areax < lenx - (smoothing / 2); areax++) {
-				for (areaz = (int)(smoothing / 2); areaz < lenz - (smoothing / 2); areaz++) {
-					if ((areax > -1) && (areaz > -1) && (areax < xResolution) && (areaz < zResolution)) {
-						heights[areax, areaz] = Mathf.Clamp((float)y * multiplier, 0, 1);
+			float y = heights[lenx / 2, lenz / 2];
+			y += maxRaiseRate * rateMultiplier;
+			for (smoothing = 1; smoothing < smooth + 1; smoothing++) {
+				float multiplier = smoothing / smooth;
+				for (areax = (int)(smoothing / 2); areax < lenx - (smoothing / 2); areax++) {
+					for (areaz = (int)(smoothing / 2); areaz < lenz - (smoothing / 2); areaz++) {
+						if ((areax > -1) && (areaz > -1) && (areax < xResolution) && (areaz < zResolution)) {
+							heights[areax, areaz] = Mathf.Clamp((float)y * multiplier, 0, 1);
+						}
 					}
 				}
 			}
+			lenx -= smooth;
+			lenz -= smooth;
+
+			UpdateObjectPositions(point, Mathf.Max(lenx, lenz), maxRaiseRate * rateMultiplier);
+
+			terrain.terrainData.SetHeights(terX, terZ, heights);
+			terrain.terrainData.RefreshPrototypes();
+			TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
+			terrainCollider.terrainData = terrain.terrainData;
+			terrain.Flush();
 		}
-		lenx -= smooth;
-		lenz -= smooth;
-
-		UpdateObjectPositions(point, Mathf.Max(lenx, lenz), maxRaiseRate * rateMultiplier);
-
-		terrain.terrainData.SetHeights(terX, terZ, heights);
-		terrain.terrainData.RefreshPrototypes();
-		TerrainCollider terrainCollider = terrain.GetComponent<TerrainCollider>();
-		terrainCollider.terrainData = terrain.terrainData;
-		terrain.Flush();
 	}
 
 	private void UpdateObjectPositions(Vector3 point, int radius, float deltaY) {

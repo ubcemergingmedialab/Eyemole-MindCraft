@@ -11,7 +11,7 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace Leap.Unity {
+namespace Leap.Unity.GraphicalRenderer {
 
   [Serializable]
   public struct SerializableType : ISerializationCallbackReceiver {
@@ -22,24 +22,19 @@ namespace Leap.Unity {
     [SerializeField, HideInInspector]
     private string _fullName;
 
-    private static Assembly[] _cachedAssemblies = null;
-    private static Assembly[] _assemblies {
+    private static Assembly _cachedAssembly = null;
+    private static Assembly _assembly {
       get {
-        if (_cachedAssemblies == null) {
-          _cachedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+        if (_cachedAssembly == null) {
+          _cachedAssembly = Assembly.GetAssembly(typeof(LeapGraphicRenderer));
         }
-        return _cachedAssemblies;
+        return _cachedAssembly;
       }
     }
 
     public void OnAfterDeserialize() {
       if (!string.IsNullOrEmpty(_fullName)) {
-        foreach (var assembly in _assemblies) {
-          _type = assembly.GetType(_fullName, throwOnError: false);
-          if (_type != null) {
-            break;
-          }
-        }
+        _type = _assembly.GetType(_fullName);
       } else {
         _type = null;
       }

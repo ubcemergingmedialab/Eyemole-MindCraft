@@ -2,6 +2,3 @@ sceneSetups:
 - path: Assets/Scenes/CubeScene.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/LeapMotion/Modules/InteractionEngine/Examples/4. Hand UI/Hand UI.unity
-  isLoaded: 0
-  isActive: 0

@@ -52,16 +52,19 @@ public class LeapTeleporter : MonoBehaviour {
 
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsLeft);
 
-		if (hand != null) {
-			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
+		if (hand != null && teleportEnabled) {
 
-			Vector3 tipPosition = index.TipPosition.ToVector3();
-			Vector3 direction = index.Direction.ToVector3();
+			ActivateRenderer(); 
+
+			Vector3 armPosition = hand.Arm.WristPosition.ToVector3();
+			Vector3 armDirection = hand.Arm.Direction.ToVector3();
 
 			Vector3 oldOrigin = rend.GetPosition(0);
 			Vector3 oldEnd = rend.GetPosition(1);
 
-			rend.SetPositions(new Vector3[2] { Vector3.Lerp(oldOrigin, tipPosition, 0.5f), Vector3.Lerp(oldEnd, tipPosition + direction * maxTeleportDistance, 0.5f) });
+			rend.SetPositions(new Vector3[2] { Vector3.Lerp(oldOrigin, armPosition, Time.deltaTime / Time.fixedDeltaTime), Vector3.Lerp(oldEnd, armPosition + armDirection * maxTeleportDistance, Time.deltaTime / Time.fixedDeltaTime) });
+		} else {
+			DeactivateRenderer();
 		}
 
 	}
@@ -76,13 +79,15 @@ public class LeapTeleporter : MonoBehaviour {
 		// Get the current Y position of the reference space
 		float refY = t.position.y;
 		
-		// Create a Ray from the origin of the index fingertip in the direction that the index finger is pointing
+		// Create a Ray from the origin of the index fingertip in the direction that the arm is pointing
 		Hand hand = controller.CurrentFrame.Hands.Find(h => h.IsLeft);
 
 		if ((hand != null) && IsReadyToTeleport() && teleportEnabled) {
+			
 
-			Finger index = hand.Fingers[(int)Finger.FingerType.TYPE_INDEX];
-			Ray ray = new Ray(index.TipPosition.ToVector3(), index.Direction.ToVector3());
+			Vector3 armPosition = hand.Arm.WristPosition.ToVector3();
+			Vector3 armDirection = hand.Arm.Direction.ToVector3();
+			Ray ray = new Ray(armPosition, armDirection);
 
 			// Set defaults
 			bool hasGroundTarget = false;

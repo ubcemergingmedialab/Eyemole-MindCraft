@@ -16,6 +16,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Net;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
@@ -52,12 +53,25 @@ public class UDPPacketIO
 		}
 		
 	}
-	
+
+	private IPAddress LocalIPAddress() {
+		if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) {
+			return null;
+		}
+
+		IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+		return host
+			.AddressList
+			.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+	}
+
 	/// <summary>
 	/// Open a UDP socket and create a UDP sender.
 	/// 
 	/// </summary>
 	/// <returns>True on success, false on failure.</returns>
+
 	public bool Open()
 	{
 		try
@@ -66,6 +80,7 @@ public class UDPPacketIO
 			Debug.Log("Opening OSC listener on port " + localPort);
 			
 			IPEndPoint listenerIp = new IPEndPoint(IPAddress.Any, localPort);
+			Debug.Log("IP " + listenerIp.ToString());
 			Receiver = new UdpClient(listenerIp);
 			
 			
