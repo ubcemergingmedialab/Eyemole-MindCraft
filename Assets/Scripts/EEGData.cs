@@ -115,8 +115,6 @@ public class EEGData : MonoBehaviour {
 
 		float relFreq = EEGData.GetAverage(freqBand) / sumBands;
 
-		Debug.Log(relFreq.ToString());
-
 		return relFreq;
 	}
 

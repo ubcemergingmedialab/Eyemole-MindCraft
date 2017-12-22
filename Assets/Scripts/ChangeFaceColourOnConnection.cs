@@ -44,6 +44,6 @@ public class ChangeFaceColourOnConnection : MonoBehaviour {
 		} else {
 			newColour = currentColour;
 		}
-		material.SetColor("_EmissionColor", Color.Lerp(currentColour, newColour, 0.01f));
+		material.SetColor("_EmissionColor", Color.Lerp(currentColour, newColour, Time.deltaTime / Time.fixedDeltaTime));
     }
 }
