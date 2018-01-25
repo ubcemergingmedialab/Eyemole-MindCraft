@@ -30,14 +30,14 @@ public class RaiseTerrain : MonoBehaviour {
 	public int lenz = 1; //the z-width of the rectangle of raised terrain
 	public int smooth = 1; //the area of smoothed terrain that will have a slope 
 
-	public float maxRaiseRate = 0.0001f; // the maximum rate at which the terrain will be raised (occurs at peak alpha)
+	public float maxRaiseRate = 0.00001f; // the maximum rate at which the terrain will be raised (occurs at peak alpha)
 
 	public float alphaThreshold = 0.2f; //threshold for the relative alpha - if it's below threshold, terrain will be lowered 
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
 		evts = GetComponentInParent<VRTK_ControllerEvents>();
-	
+
 		pointerRenderer = GetComponentInParent<VRTK_StraightPointerRenderer>();
 
 		xResolution = terrain.terrainData.heightmapWidth;
@@ -47,7 +47,7 @@ public class RaiseTerrain : MonoBehaviour {
 		alphaMapWidth = terrain.terrainData.alphamapWidth;
 		alphaMapHeight = terrain.terrainData.alphamapHeight;
 		numOfAlphaLayers = terrain.terrainData.alphamapLayers;
-		
+
 
 		//Back up the terrain's height and alpha maps so that you don't permanently alter it 
 		heightMapBackup = terrain.terrainData.GetHeights(0, 0, xResolution, zResolution);
@@ -92,7 +92,7 @@ public class RaiseTerrain : MonoBehaviour {
 		float[,] heights = terrain.terrainData.GetHeights(terX, terZ, lenx, lenz);
 
 		float rateMultiplier = 1f;
-		if (EEGData.alphaData[1] != 0) {
+		if (EEGData.GetEEGData()[1] != 0) {
 			rateMultiplier = GetRelativeAlpha();
 		}
 
@@ -136,7 +136,7 @@ public class RaiseTerrain : MonoBehaviour {
 
 	private float GetRelativeAlpha() {
 
-		float relAlpha = EEGData.GetRelativeAlpha();
+		float relAlpha = EEGData.GetRelativeFrequency(EEGData.EEG_BANDS.ALPHA);
 
 		return relAlpha > alphaThreshold ? relAlpha : ((1f - relAlpha / alphaThreshold) * -1f);
 	}

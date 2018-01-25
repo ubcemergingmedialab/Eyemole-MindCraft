@@ -6,7 +6,7 @@ using System.Text;
 using System.Linq;
 
 public class EEGData : MonoBehaviour {
-	
+
 	public OSC osc;
 
 	public bool useEEG = true;
@@ -20,36 +20,60 @@ public class EEGData : MonoBehaviour {
 
 	public string museName = "/muse";
 
-	public static float[] eegData;
-	public static float[] alphaData;
-	public static float[] betaData;
-	public static float[] deltaData;
-	public static float[] thetaData;
-	public static float[] gammaData;
+	public static float[][] eegData;
 	public static float[] accData;
-	
+
+	public enum EEG_BANDS : int { DELTA = 0, THETA = 1, ALPHA = 2, BETA = 3, GAMMA = 4 };
+
+	public enum EEG_CHANNEL : int { TP9 = 0, AF7 = 1, AF8 = 2, TP10 = 3 };
+
+	public static float[][][] freqData;
+
+	public static int bufferSize = 256;
+	public static int currBufferPositionEEG = 0; 
+	public static int[] currBufferPositionFreq;
+
+	public static float maxTimeBetweenUpdates = 3000f;
+	public static float lastTimeUpdated = 0f;
+
 	// Script initialization
-	void Start() {	
-		
+	void Start() {
+
 		UnityEngine.Debug.Log("Started");
 
 		osc = GetComponent<OSC>();
 
-		eegData = new float[4];
-		alphaData = new float[4];
-		betaData = new float[4];
-		thetaData = new float[4];
-		deltaData = new float[4];
-		gammaData = new float[4];
+		eegData = new float[4][];
 		accData = new float[3];
+		freqData = new float[5][][];
 
-		if (useEEG) osc.SetAddressHandler( museName + "/eeg" , OnReceiveEEG );
-		if (useAlpha) osc.SetAddressHandler( museName + "/elements/alpha_absolute" , OnReceiveAlpha);
-		if (useBeta) osc.SetAddressHandler( museName + "/elements/beta_absolute" , OnReceiveBeta);
-		if (useTheta) osc.SetAddressHandler( museName + "/elements/theta_absolute" , OnReceiveTheta);
-		if (useGamma) osc.SetAddressHandler( museName + "/elements/gamma_absolute" , OnReceiveGamma);
-		if (useDelta) osc.SetAddressHandler( museName + "/elements/delta_absolute" , OnReceiveDelta);
-		if (useAcc) osc.SetAddressHandler( museName + "/acc" , OnReceiveAcc);
+		// Position in the buffer for each frequency band
+		currBufferPositionFreq = new int[] {0, 0, 0, 0, 0};
+
+		int numChannels = Enum.GetNames(typeof(EEG_CHANNEL)).Length;
+
+		// Initialize the buffer for EEG data 
+
+		for (int i = 0; i < bufferSize; i++) {
+			eegData[i] = new float[numChannels];
+		}
+
+		// Initialize the buffer for frequency data
+
+		foreach (EEG_BANDS eegBand in Enum.GetValues(typeof(EEG_BANDS))) {
+			freqData[(int)eegBand] = new float[numChannels][];
+			for (int i = 0; i < bufferSize; i++) {
+				freqData[(int)eegBand][i] = new float[numChannels];
+			}
+		}
+
+		if (useEEG) osc.SetAddressHandler(museName + "/eeg", OnReceiveEEG);
+		if (useAlpha) osc.SetAddressHandler(museName + "/elements/alpha_absolute", OnReceiveAlpha);
+		if (useBeta) osc.SetAddressHandler(museName + "/elements/beta_absolute", OnReceiveBeta);
+		if (useTheta) osc.SetAddressHandler(museName + "/elements/theta_absolute", OnReceiveTheta);
+		if (useGamma) osc.SetAddressHandler(museName + "/elements/gamma_absolute", OnReceiveGamma);
+		if (useDelta) osc.SetAddressHandler(museName + "/elements/delta_absolute", OnReceiveDelta);
+		if (useAcc) osc.SetAddressHandler(museName + "/acc", OnReceiveAcc);
 	}
 
 	// NOTE: The received messages at each server are updated here
@@ -59,59 +83,124 @@ public class EEGData : MonoBehaviour {
 
 	void OnReceiveEEG(OscMessage message) {
 		for (int i = 0; i < 4; i++) {
-			eegData[i] = message.GetFloat(i);
+			eegData[currBufferPositionEEG % bufferSize][i] = message.GetFloat(i);
 		}
+
+		lastTimeUpdated = Time.time;
 	}
 
 	void OnReceiveAlpha(OscMessage message) {
+
+		int currPos = currBufferPositionFreq[(int)EEG_BANDS.ALPHA];
 		for (int i = 0; i < 4; i++) {
-			alphaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.ALPHA][currPos % bufferSize][i] = message.GetFloat(i);
 		}
+
+		currBufferPositionFreq[(int)EEG_BANDS.ALPHA]++;
+		lastTimeUpdated = Time.time;
 	}
 
-    void OnReceiveBeta(OscMessage message) {
+	void OnReceiveBeta(OscMessage message) {
+
+		int currPos = currBufferPositionFreq[(int)EEG_BANDS.BETA];
 		for (int i = 0; i < 4; i++) {
-			betaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.BETA][currPos % bufferSize][i] = message.GetFloat(i);
 		}
+
+		currBufferPositionFreq[(int)EEG_BANDS.BETA]++;
+		lastTimeUpdated = Time.time;
 	}
 
 	void OnReceiveGamma(OscMessage message) {
+
+		int currPos = currBufferPositionFreq[(int)EEG_BANDS.GAMMA];
 		for (int i = 0; i < 4; i++) {
-			gammaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.GAMMA][currPos % bufferSize][i] = message.GetFloat(i);
 		}
+		currBufferPositionFreq[(int)EEG_BANDS.GAMMA]++;
+		lastTimeUpdated = Time.time;
 	}
 
 	void OnReceiveDelta(OscMessage message) {
+
+		int currPos = currBufferPositionFreq[(int)EEG_BANDS.DELTA];
 		for (int i = 0; i < 4; i++) {
-			deltaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.DELTA][currPos % bufferSize][i] = message.GetFloat(i);
 		}
+		currBufferPositionFreq[(int)EEG_BANDS.DELTA]++;
+		lastTimeUpdated = Time.time;
 	}
 
 	void OnReceiveTheta(OscMessage message) {
+
+		int currPos = currBufferPositionFreq[(int)EEG_BANDS.THETA];
 		for (int i = 0; i < 4; i++) {
-			thetaData[i] = message.GetFloat(i);
+			freqData[(int)EEG_BANDS.THETA][currPos % bufferSize][i] = message.GetFloat(i);
 		}
+		currBufferPositionFreq[(int)EEG_BANDS.THETA]++;
+		lastTimeUpdated = Time.time;
 	}
 
 	void OnReceiveAcc(OscMessage message) {
 		for (int i = 0; i < 3; i++) {
 			accData[i] = message.GetFloat(i);
 		}
+		lastTimeUpdated = Time.time;
 	}
 
-	public static float GetRelativeAlpha() {
+	/// <summary>
+	/// Gets the raw EEG data - at the most recent update if samplesBefore is not specified,
+	/// or the samplesBefore'th most recent update.
+	/// </summary>
+	/// <param name="samplesBefore"></param>
+	/// <returns></returns>
+	public static float[] GetEEGData(int samplesBefore = 0) {
 
-		float avgAlpha = EEGData.alphaData.Average();
-		float avgBeta = EEGData.betaData.Average();
-		float avgGamma = EEGData.gammaData.Average();
-		float avgTheta = EEGData.thetaData.Average();
-		float avgDelta = EEGData.deltaData.Average();
-
-		float relAlpha = avgAlpha / (avgAlpha + avgBeta + avgDelta + avgGamma + avgTheta);
-
-		Debug.Log(relAlpha.ToString());
-
-		return relAlpha;
+		return EEGData.eegData[(EEGData.currBufferPositionEEG - samplesBefore) % EEGData.bufferSize];
 	}
+
+	/// <summary>
+	/// Gets the absolute power of the specified frequency band. If samplesBefore is not specified,
+	/// return the most recently updated value, otherwise return the samplesBefore'th most recent value.
+	/// </summary>
+	/// <param name="freqBand"></param>
+	/// <param name="samplesBefore"></param>
+	/// <returns></returns>
+
+	public static float[] GetAbsoluteFrequency(EEG_BANDS freqBand, int samplesBefore = 0) {
+
+		int currPos = currBufferPositionFreq[(int) freqBand];
+		return EEGData.freqData[(int)freqBand][(currPos - samplesBefore) % EEGData.bufferSize];
+	}
+
+	public static float GetAverage(EEG_BANDS freqBand) {
+		
+		return EEGData.GetAbsoluteFrequency(freqBand).Average();
+	}
+
+	public static float GetRelativeFrequency(EEG_BANDS freqBand) {
+
+		float sumBands = 0f;
+
+		foreach (EEG_BANDS eegBand in Enum.GetValues(typeof(EEG_BANDS))) {
+			sumBands += EEGData.GetAverage(eegBand);
+		}
+
+		float relFreq = EEGData.GetAverage(freqBand) / sumBands;
+
+		return relFreq;
+	}
+
+	public static float GetConcentration() {
+
+		return GetRelativeFrequency(EEG_BANDS.ALPHA);
+
+	}
+
+	public static bool IsEEGConnected() {
+
+		return (Time.time - lastTimeUpdated) < maxTimeBetweenUpdates;
+	}
+
 
 }
