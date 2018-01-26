@@ -7,11 +7,13 @@ public class TreeObject {
 	public TreeObject left;
 	public TreeObject right;
 
-	public MeshRenderer rend;
+	public GameObject obj;
 
 	public TreeObject(GameObject tree) {
+
 		left = null;
 		right = null;
+		obj = tree;
 		GameObject.Instantiate(tree);
 	}
 
@@ -41,18 +43,25 @@ public class TreeObject {
 
 	public void AddBranchLeft(TreeObject parent, GameObject tree) {
 
-
+		tree.transform.parent = parent.obj.transform;
+		parent.left = new TreeObject(tree);
 	}
 
 	public void AddBranchRight(TreeObject parent, GameObject tree) {
+
+		tree.transform.parent = parent.obj.transform;
+		parent.right = new TreeObject(tree);
+
 	}
 
-	public void RemoveBranchLeft(TreeObject parent, GameObject tree) {
+	public void RemoveBranchLeft(TreeObject parent) {
 
+		parent.left = null;
 	}
 
-	public void RemoveBranchRight(TreeObject parent, GameObject tree) {
+	public void RemoveBranchRight(TreeObject parent) {
 
+		parent.right = null;
 	}
 
 }
