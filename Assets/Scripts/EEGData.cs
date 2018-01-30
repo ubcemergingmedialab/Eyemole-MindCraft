@@ -173,27 +173,44 @@ public class EEGData : MonoBehaviour {
 		return EEGData.freqData[(int)freqBand][(currPos - samplesBefore) % EEGData.bufferSize];
 	}
 
-	public static float GetAverage(EEG_BANDS freqBand) {
+	public static float GetAverage(EEG_BANDS freqBand, int samplesBefore = 0) {
 		
-		return EEGData.GetAbsoluteFrequency(freqBand).Average();
+		return EEGData.GetAbsoluteFrequency(freqBand, samplesBefore).Average();
 	}
 
-	public static float GetRelativeFrequency(EEG_BANDS freqBand) {
+	public static float GetRelativeFrequency(EEG_BANDS freqBand, int samplesBefore = 0) {
 
 		float sumBands = 0f;
 
 		foreach (EEG_BANDS eegBand in Enum.GetValues(typeof(EEG_BANDS))) {
-			sumBands += EEGData.GetAverage(eegBand);
+			sumBands += EEGData.GetAverage(eegBand, samplesBefore);
 		}
 
-		float relFreq = EEGData.GetAverage(freqBand) / sumBands;
+		float relFreq = EEGData.GetAverage(freqBand, samplesBefore) / sumBands;
 
 		return relFreq;
 	}
 
-	public static float GetConcentration() {
 
-		return GetRelativeFrequency(EEG_BANDS.ALPHA);
+	/// <summary>
+	/// Define concentration as the difference between avg alpha over the set of channels
+	/// between the current sample and the last sample. Low values indicate high stability 
+	/// = high concentration.
+	/// </summary>
+	/// <param name="chans"> Channels that will be included in calculating
+	/// the concentration.</param>
+	/// <returns> The concentration value over the set of channels.</returns>
+	
+	public static float GetConcentration(EEG_CHANNEL[] chans) {
+
+		float[] alphaData = GetAbsoluteFrequency(EEG_BANDS.ALPHA);
+		float[] oldAlphaData = GetAbsoluteFrequency(EEG_BANDS.ALPHA, 1);
+
+		float[] data = chans.Select(x => alphaData[(int)x]).ToArray();
+		float[] oldData = chans.Select(x => oldAlphaData[(int)x]).ToArray();
+
+		Debug.Log(Mathf.Abs(data.Average() - oldData.Average()));
+		return Mathf.Abs(data.Average() - oldData.Average());
 
 	}
 
