@@ -9,7 +9,8 @@ public class EEGTree : MonoBehaviour {
 	public enum Concentration { Left, Right, None }; // Whether the user has higher concentration on left side, right side, or is not concentrated
 	public float threshold;
 	public GameObject tree;
-	private TreeObject treeObject;
+	private TreeObject currentTreeObject;
+	private TreeObject treeRoot;
 
 	private VRTK_ControllerEvents controllerEvents;
 	private VRTK_StraightPointerRenderer pointerRenderer;
@@ -34,7 +35,7 @@ public class EEGTree : MonoBehaviour {
 	void Update () {
 
 		if (Time.time - timeLastFrame > updateRate) {
-			if (controllerEvents.touchpadPressed && EEGData.IsEEGConnected()) {
+			if (controllerEvents.touchpadPressed) { // EEGData.IsEEGConnected()) {
 
 				DrawTree();
 			}
@@ -52,7 +53,7 @@ public class EEGTree : MonoBehaviour {
 
 		RaycastHit hit = pointerRenderer.GetDestinationHit();
 		Vector3 point = hit.point;
-		treeObject = new TreeObject(tree, point, 0f);
+		currentTreeObject = new TreeObject(tree, null, point, 0f);
 	}
 	
 	/// <summary>
@@ -61,8 +62,8 @@ public class EEGTree : MonoBehaviour {
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
 	private void RemoveTreeObject(object sender, ControllerInteractionEventArgs e) {
-
-		treeObject = null;
+		
+		treeRoot = null;
 	}
 
 	/// <summary>
@@ -77,18 +78,18 @@ public class EEGTree : MonoBehaviour {
 			case Concentration.None:
 
 				if (IsMoreConcentratedLeft()) {
-					treeObject.RemoveBranch(treeObject.FindBranchRight());
-				} else treeObject.RemoveBranch(treeObject.FindBranchLeft());
+					currentTreeObject.RemoveBranch(currentTreeObject.FindBranchRight());
+				} else currentTreeObject.RemoveBranch(currentTreeObject.FindBranchLeft());
 				break;
 
 			case Concentration.Left:
 
-				treeObject.AddBranchLeft(treeObject.FindBranchLeft(), tree);
+				currentTreeObject.AddBranchLeft(currentTreeObject.GetRoot().FindFirstBranchWithoutLeft(), tree);
 				break;
 
 			case Concentration.Right:
 
-				treeObject.AddBranchRight(treeObject.FindBranchRight(), tree);
+				currentTreeObject.AddBranchRight(currentTreeObject.GetRoot().FindFirstBranchWithoutRight(), tree);
 				break;
 
 		}
