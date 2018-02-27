@@ -9,8 +9,8 @@ public class TreeObject {
 	public TreeObject parent;
 
 	private float treeHeight = 0.4f;
-	private float treeLength = 0.1f;
-	private float scaleFactor = 1f;
+	private float treeLength = 0.2f;
+	private float scaleFactor = 0.99f;
 	public GameObject obj;
 
 	public TreeObject(GameObject tree, TreeObject parent, Vector3 position = default(Vector3), float angle = 0f) {
@@ -25,8 +25,8 @@ public class TreeObject {
 			Transform parentTransform = parent.obj.transform;
 			obj.transform.parent = parentTransform;
 			obj.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-			obj.transform.localRotation = Quaternion.AngleAxis(angle, parentTransform.forward);
-			obj.transform.localPosition = parentTransform.up * treeHeight * scaleFactor + parentTransform.right * treeHeight * Mathf.Sign(-1f * angle) * scaleFactor;
+			obj.transform.rotation = Quaternion.AngleAxis(angle, parentTransform.forward);
+			obj.transform.position = parentTransform.position + Vector3.up * treeHeight * scaleFactor + Vector3.right * treeHeight * Mathf.Sign(-1f * (angle - 90)) * scaleFactor;
 
 		} else {
 			obj.transform.Rotate(Vector3.forward, angle, Space.World);
@@ -66,7 +66,7 @@ public class TreeObject {
 	public TreeObject FindFirstBranchWithoutLeft() {
 
 		TreeObject firstWithoutLeft = this;
-
+		int i = 0;
 		if (this.left == null) {
 			return this;
 		} else {
@@ -86,12 +86,19 @@ public class TreeObject {
 
 				traverse = stack.Pop();
 
-				if (traverse.left == null)
+				if (traverse.left == null) {
 					return traverse;
-				else stack.Push(traverse.left);
+				} else {
+					Debug.Log("left");
+					i++;
+					stack.Push(traverse.left);
+				}
 
-				if (traverse.right != null)
+				if (traverse.right != null) {
+					Debug.Log("right");
+					i++;
 					stack.Push(traverse.right);
+				}
 			}
 
 			stack.Clear();
@@ -108,6 +115,7 @@ public class TreeObject {
 		if (this.right == null) {
 			return this;
 		} else {
+			int i = 0;
 			Stack<TreeObject> stack;
 			/* Points to node we are processing. */
 			TreeObject traverse = this;
@@ -124,12 +132,19 @@ public class TreeObject {
 
 				traverse = stack.Pop();
 
-				if (traverse.right == null)
+				if (traverse.right == null) {
 					return traverse;
-				else stack.Push(traverse.right);
+				} else {
+					Debug.Log("right");
+					i++;
+					stack.Push(traverse.right);
+				}
 
-				if (traverse.left != null)
+				if (traverse.left != null) {
+					Debug.Log("left");
+					i++;
 					stack.Push(traverse.left);
+				}
 			}
 
 			stack.Clear();
@@ -140,11 +155,11 @@ public class TreeObject {
 	}
 
 	public void AddBranchLeft(TreeObject parent, GameObject tree) {
-		parent.left = new TreeObject(tree, parent, parent.obj.transform.position + Vector3.up * treeHeight + Vector3.left * treeLength, 45f);
+		parent.left = new TreeObject(tree, parent, parent.obj.transform.position + Vector3.up * treeHeight + Vector3.left * treeLength, 135f);
 	}
 
 	public void AddBranchRight(TreeObject parent, GameObject tree) {
-		parent.right = new TreeObject(tree, parent, parent.obj.transform.position + Vector3.up * treeHeight + Vector3.right * treeLength, -45f);
+		parent.right = new TreeObject(tree, parent, parent.obj.transform.position + Vector3.up * treeHeight + Vector3.right * treeLength, 45f);
 
 	}
 

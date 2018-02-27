@@ -19,7 +19,7 @@ public class EEGTree : MonoBehaviour {
 	private EEGData.EEG_CHANNEL[] chanLeft = new EEGData.EEG_CHANNEL[2] { EEGData.EEG_CHANNEL.AF7, EEGData.EEG_CHANNEL.TP9};
 	private EEGData.EEG_CHANNEL[] chanRight = new EEGData.EEG_CHANNEL[2] {EEGData.EEG_CHANNEL.TP10, EEGData.EEG_CHANNEL.AF8 };
 
-	private float updateRate = 0.1f;
+	private float updateRate = 0.5f;
 	private float timeLastFrame = 0f;
 
 	// Use this for initialization
