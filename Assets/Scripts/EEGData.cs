@@ -171,7 +171,8 @@ public class EEGData : MonoBehaviour {
 	public static float[] GetAbsoluteFrequency(EEG_BANDS freqBand, int samplesBefore = 0) {
 
 		int currPos = currBufferPositionFreq[(int)freqBand];
-		return EEGData.freqData[(int)freqBand][(currPos - 1 - samplesBefore) % EEGData.bufferSize];
+        Debug.Log(currPos);
+		return EEGData.freqData[(int)freqBand][(Mathf.Max(currPos - 1, 0) - samplesBefore) % EEGData.bufferSize];
 	}
 
 	public static float GetAverage(EEG_BANDS freqBand, int samplesBefore = 0) {

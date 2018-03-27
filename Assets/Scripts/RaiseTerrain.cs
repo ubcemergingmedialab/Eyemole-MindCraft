@@ -12,6 +12,7 @@ public class RaiseTerrain : MonoBehaviour {
 	private VRTK_ControllerEvents evts;
 	private VRTK_StraightPointerRenderer pointerRenderer;
 
+    private AudioSource terrainSound;
 	public Terrain terrain;
 
 	private int xResolution;
@@ -34,16 +35,19 @@ public class RaiseTerrain : MonoBehaviour {
 
 	public float alphaThreshold = 0.2f; //threshold for the relative alpha - if it's below threshold, terrain will be lowered 
 
+    private float timeLastUpdated = 0.0f;
+    private float timeBetweenUpdates = 0.1f;
+
 	// Use this for initialization
 	void Start() {
+
+        terrainSound = GetComponent<AudioSource>();
 		evts = GetComponentInParent<VRTK_ControllerEvents>();
 
 		pointerRenderer = GetComponentInParent<VRTK_StraightPointerRenderer>();
 
 		xResolution = terrain.terrainData.heightmapWidth;
 		zResolution = terrain.terrainData.heightmapHeight;
-		Debug.Log(xResolution.ToString());
-		Debug.Log(zResolution.ToString());
 		alphaMapWidth = terrain.terrainData.alphamapWidth;
 		alphaMapHeight = terrain.terrainData.alphamapHeight;
 		numOfAlphaLayers = terrain.terrainData.alphamapLayers;
@@ -56,6 +60,7 @@ public class RaiseTerrain : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
+
 		//Reset the terrain's shape to what it was originally 
 
 		terrain.terrainData.SetHeights(0, 0, heightMapBackup);
@@ -66,8 +71,21 @@ public class RaiseTerrain : MonoBehaviour {
 	private void FixedUpdate() {
 
 		if (evts.touchpadPressed) {
-			RaiseTerrainUnderPointer();
-		}
+            if (! terrainSound.isPlaying) {
+                terrainSound.Play();
+            }
+            terrainSound.volume = 1f;
+            if (Time.time - timeLastUpdated >= timeBetweenUpdates) {
+                RaiseTerrainUnderPointer();
+                timeLastUpdated = Time.time;
+            }
+		} else {
+            if (terrainSound.volume <= 0f) {
+                terrainSound.Stop();
+            } else {
+                terrainSound.volume -= 0.01f;
+            }
+        }
 	}
 
 	void RaiseTerrainUnderPointer() {

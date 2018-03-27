@@ -366,11 +366,13 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+    <Compile Include="Assets\Scripts\AudioFadeOut.cs" />
     <Compile Include="Assets\Scripts\ChangeFaceColour.cs" />
     <Compile Include="Assets\Scripts\ChangeFaceColourOnConnection.cs" />
     <Compile Include="Assets\Scripts\ChangeSceneOnGrab.cs" />
     <Compile Include="Assets\Scripts\ChangeSkyboxColour.cs" />
     <Compile Include="Assets\Scripts\ColourUtility.cs" />
+    <Compile Include="Assets\Scripts\ControlMusicWithEEG.cs" />
     <Compile Include="Assets\Scripts\CreateObject.cs" />
     <Compile Include="Assets\Scripts\CubeStateManager.cs" />
     <Compile Include="Assets\Scripts\EEGData.cs" />
@@ -379,6 +381,7 @@
     <Compile Include="Assets\Scripts\menuStart.cs" />
     <Compile Include="Assets\Scripts\MoveCubeEEG.cs" />
     <Compile Include="Assets\Scripts\OSC.cs" />
+    <Compile Include="Assets\Scripts\PlaySoundOnGrabbed.cs" />
     <Compile Include="Assets\Scripts\RaiseTerrain.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
