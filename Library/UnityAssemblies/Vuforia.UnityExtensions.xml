@@ -18,6 +18,17 @@
             are in world coordinate system and use a physical unit (meter).
             </summary>
     </member>
+    <member name="T:Vuforia.GuideViewCameraBehaviour">
+      <summary>
+            This class represents a Guide View Camera, which can be used to configure 
+            the guide view pose for detection of a Model Target.
+            When attaching this component to a game object, 
+            a Camera will be created automatically.
+            This Camera is only used at Editor time to faciliate the Application developer
+            to adjust the Pose visually by looking at the Camera preview.
+            At runtime, the Camera component will be automatically disabled.
+            </summary>
+    </member>
     <member name="M:Vuforia.AndroidDatasets.AddExternalDatasetSearchDirs">
       <summary>
             This method inserts new dataset search roots for datasets defined in StreamingAssets/QCAR. This may
@@ -440,6 +451,151 @@
             return A reference to the calibrator object
             </summary>
     </member>
+    <member name="T:Vuforia.GuideView">
+      <summary>
+            This class represents a Guide View which can be extracted from the DataSet
+            </summary>
+    </member>
+    <member name="P:Vuforia.GuideView.Image">
+      <summary>
+            Accessor to Image data
+            </summary>
+    </member>
+    <member name="P:Vuforia.GuideView.Pose">
+      <summary>
+            The pose of the guide view in camera space
+            If set, it invalidates the Image property
+            </summary>
+    </member>
+    <member name="T:Vuforia.GuideView2DBehaviour">
+      <summary>
+            Class representing a 2D Guide View for Model Target Detection.
+            </summary>
+    </member>
+    <member name="M:Vuforia.GuideView2DBehaviour.UpdateView(Vuforia.ModelTargetBehaviour,Vuforia.GuideView)">
+      <summary>
+            Updates the Guide View content and layout.
+            </summary>
+      <param name="guideView">
+      </param>
+    </member>
+    <member name="T:Vuforia.GuideView3DBehaviour">
+      <summary>
+            Class representing a 3D Guide View for Model Target Detection.
+            </summary>
+    </member>
+    <member name="M:Vuforia.GuideView3DBehaviour.UpdateGuideViewPose(UnityEngine.Matrix4x4)">
+      <summary>
+            Updates the pose of the GuideView with the new values
+            Only executed if there is sufficient change to the old values
+            </summary>
+      <param name="newPose">The new pose in matrix form</param>
+    </member>
+    <member name="M:Vuforia.GuideView3DBehaviour.UpdateView(Vuforia.ModelTargetBehaviour,Vuforia.GuideView)">
+      <summary>
+            Updates the Guide View content and layout.
+            </summary>
+      <param name="modelTarget">
+      </param>
+      <param name="guideView">
+      </param>
+    </member>
+    <member name="T:Vuforia.GuideViewRenderingBehaviour">
+      <summary>
+            Class handling the activation/update/rendering of the Guide View for Model Target detection.
+            </summary>
+    </member>
+    <member name="M:Vuforia.GuideViewRenderingBehaviour.DeleteTargetGuideView">
+      <summary>
+            Destroys the internal GuideViewGameObject and makes sure that a 3D guideview object is returned to it's previous owner
+            </summary>
+    </member>
+    <member name="M:Vuforia.GuideViewRenderingBehaviour.Initialize(Vuforia.ModelTargetBehaviour)">
+      <summary>
+            Setup function that creates the necessary GuideView rendering components for the provided ModelTargetBehaviour
+            Depending on the set GuideView display mode, different scene-trees are created
+            </summary>
+      <param name="modelTarget">The ModelTarget to be used for GuideView rendering</param>
+    </member>
+    <member name="T:Vuforia.ModelTarget">
+      <summary>
+            A trackable behaviour to represent a flat natural feature target.
+            </summary>
+    </member>
+    <member name="M:Vuforia.ModelTarget.GetBoundingBox">
+      <summary>
+            Returns the bounding box  of the target (in 3D scene units).
+            </summary>
+    </member>
+    <member name="M:Vuforia.ModelTarget.GetNumGuideViews">
+      <summary>
+            Queries native for the number of guide views in the DataSet
+            </summary>
+      <returns>The number of guide views</returns>
+    </member>
+    <member name="M:Vuforia.ModelTarget.GetGuideView(System.Int32)">
+      <summary>
+            Returns a guide view with a given index
+            </summary>
+      <param name="index">which guide view</param>
+      <returns>GuideView class instance</returns>
+    </member>
+    <member name="T:Vuforia.ModelTargetBehaviour">
+      <summary>
+            This class serves both as an augmentation definition for a ModelTarget in the editor
+            as well as a tracked ModelTarget result at runtime
+            </summary>
+    </member>
+    <member name="T:Vuforia.ModelTargetBehaviour.GuideViewDisplayMode">
+      <summary>
+            The different modes how Vuforia will provide guide view rendering:
+            - No guide view rendering (in case there is custom application logic to display some form of snapping view)
+            - 2D guide view using the integrated or overwritten texture
+            - 3D guide view using the integrated or overwritten 3D model
+            </summary>
+    </member>
+    <member name="F:Vuforia.ModelTargetBehaviour.GuideViewDisplayMode.NoGuideView">
+            Using camel-case for enum here, so that Unity automatically creates nice strings for in editor display
+            e.g. "NoGuideView" becomes "No Guide View" 
+        </member>
+    <member name="P:Vuforia.ModelTargetBehaviour.ModelTarget">
+      <summary>
+            The ModelTarget that this ModelTargetBehaviour augments
+            </summary>
+    </member>
+    <member name="M:Vuforia.ModelTargetBehaviour.SetBoundingBox(UnityEngine.Vector3,UnityEngine.Vector3)">
+      <summary>
+            Set the Bounding Box (only in editor mode).
+            </summary>
+      <param name="minBBox">bounding box min position</param>
+      <param name="maxBBox">bounding box max position</param>
+    </member>
+    <member name="M:Vuforia.ModelTargetBehaviour.GetSize">
+      <summary>
+            Returns the size of this target in scene units
+            </summary>
+    </member>
+    <member name="M:Vuforia.ModelTargetBehaviour.SetLength(System.Single)">
+      <summary>
+            Set the length (x-dimension) of the target in scene units.
+            This will scale the target uniformly.
+            </summary>
+      <param name="length">length value</param>
+    </member>
+    <member name="M:Vuforia.ModelTargetBehaviour.SetWidth(System.Single)">
+      <summary>
+            Set the width (y-dimension) of the target in scene units.
+            This will scale the target uniformly.
+            </summary>
+      <param name="width">width value</param>
+    </member>
+    <member name="M:Vuforia.ModelTargetBehaviour.SetHeight(System.Single)">
+      <summary>
+            Set the height (z-dimension) of the target in scene units.
+            This will scale the target uniformly.
+            </summary>
+      <param name="height">height value</param>
+    </member>
     <member name="T:Vuforia.GLErrorHandler">
       <summary>
             This Script can be used to set a full screen error message if an error happens on startup.
@@ -454,6 +610,25 @@
     <member name="T:Vuforia.MaskOutBehaviour">
       <summary>
             Helper behaviour used to hide augmented objects behind the video background.
+            </summary>
+    </member>
+    <member name="T:Vuforia.HitTestEvent">
+      <summary>
+            An Event that passes a HitTestResult after a performed hit test. HitTestResult can be null.
+            </summary>
+    </member>
+    <member name="T:Vuforia.HitTestMode">
+      <summary>
+            The mode in which the surface is found.
+            Automatic is used to perform a hit test from the screen center periodically.
+            Interactive is used to perform a hit test on manual input (touch, mouse)
+            </summary>
+    </member>
+    <member name="T:Vuforia.AnchorStageBehaviour">
+      <summary>
+            Used to display position and real-world scale (1x1 meters) of a child content relative to a surface or point in space
+            Has a fixed rotation and scale as planes currently can only be horizontal with real world scale. 
+            1 Unity unit equals 1 meter.
             </summary>
     </member>
     <member name="M:Vuforia.IHoloLensApiAbstraction.SetFocusPoint(UnityEngine.Vector3,UnityEngine.Vector3)">
@@ -599,6 +774,21 @@
       <summary>
             Unregisters a previously registered callback
             </summary>
+    </member>
+    <member name="M:Vuforia.DeviceTrackerARController.RegisterDevicePoseStatusChangedCallback(System.Action{Vuforia.TrackableBehaviour.Status})">
+      <summary>
+            Register an action for the status changed callback.
+            This callback whenever the tracker status changes. For example from "UNKNOWN" to "TRACKED",
+            </summary>
+      <param name="callback">
+      </param>
+    </member>
+    <member name="M:Vuforia.DeviceTrackerARController.UnregisterDevicePoseStatusChangedCallback(System.Action{Vuforia.TrackableBehaviour.Status})">
+      <summary>
+            Unregister the Status change callback
+            </summary>
+      <param name="callback">
+      </param>
     </member>
     <member name="T:Vuforia.TurnOffBehaviour">
       <summary>
@@ -1466,12 +1656,6 @@
             in a new scene
             </summary>
     </member>
-    <member name="P:Vuforia.VuforiaConfiguration.SmartTerrainTrackerConfiguration.SceneUnitsToMillimeter">
-      <summary>
-            Scaling factor for SmartTerrain trackables from scene units into millimeters
-            </summary>
-            This value is important to get proper generation of smart terrain trackables
-        </member>
     <member name="P:Vuforia.VuforiaConfiguration.DeviceTrackerConfiguration.TrackingMode">
       <summary>
             Tracking mode configures the DeviceTracker to deliver 3DOF (rotational)
@@ -1773,259 +1957,6 @@
             The Trackable created at runtime that is augmented by this TrackableBehaviour
             </summary>
     </member>
-    <member name="T:Vuforia.Reconstruction">
-      <summary>
-            This is the base interface for a smart terrain reconstruction.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.SetMaximumArea(UnityEngine.Rect)">
-      <summary>
-            Set the maximum area of the reconstruction in scene units. 
-            The ground plane will not expand outside of this rectangle.
-            Props are only created inside the rectangle. Props on the boundary
-            of the rectangle will be cut off.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.GetMaximumArea(UnityEngine.Rect@)">
-      <summary>
-            Get the maximum extent of the smart terrain reconstruction in scene units.
-            Returns false if no maximum area has been defined.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.Stop">
-      <summary>
-            Stop mesh this reconstruction, but continue tracking.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.Start">
-      <summary>
-            Start the reconstruction if previously stopped, i.e. new surfaces and props will be created and existing ones will be refined.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.IsReconstructing">
-      <summary>
-            Returns true if the surface and props are being updated.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.SetNavMeshPadding(System.Single)">
-      <summary>
-            Define how much a surface mesh is diminished for the NavMesh representation.
-            </summary>
-    </member>
-    <member name="P:Vuforia.Reconstruction.NavMeshPadding">
-      <summary>
-            Returns the Nav mesh padding previously set by SetNavMeshPadding. Defaults to 0.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.StartNavMeshUpdates">
-      <summary>
-            Start creating a nav mesh representation on surfaces.
-            By default, nav mesh updates are disabled.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.StopNavMeshUpdates">
-      <summary>
-            Stop updating nav meshes, but continue updating the surface and props and keep tracking.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.IsNavMeshUpdating">
-      <summary>
-            Returns true if the nav mesh is being updated.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Reconstruction.Reset">
-      <summary>
-            Delete the created meshes for surfaces and props.
-            The tracker needs to be stopped before calling this function
-            </summary>
-    </member>
-    <member name="T:Vuforia.ReconstructionFromTarget">
-      <summary>
-            This is the interface for a smart terrain reconstruction that is initialized from a known target
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.CylinderTarget,UnityEngine.Vector3,UnityEngine.Vector3)">
-      <summary>
-            Set the Trackable that is used to initialize the Reconstruction.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for plane finding.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.CylinderTarget,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion)">
-      <summary>
-            Set the Trackable that is used to initialize the Reconstruction.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for plane finding.
-            offsetToOccluderOrigin and rotationToOccluderOrigin define a translational offset and rotation of the occluder volume to the initialization target. 
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.ImageTarget,UnityEngine.Vector3,UnityEngine.Vector3)">
-      <summary>
-            Set the Trackable that is used to initialize the Reconstruction.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for plane finding.
-            scaleToMillimenters is a scale factor that defines how the initialization target/occluder dimensions need to be scaled to be in real world millimeters.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.ImageTarget,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion)">
-      <summary>
-            Set the Trackable that is used to initialize the Reconstruction.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for plane finding.
-            offsetToOccluderOrigin and rotationToOccluderOrigin define a translational offset and rotation of the occluder volume to the initialization target.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.MultiTarget,UnityEngine.Vector3,UnityEngine.Vector3)">
-      <summary>
-            Set the Trackable that is used to initialize the Reconstruction.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for smart terrain plane finding.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.SetInitializationTarget(Vuforia.MultiTarget,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Vector3,UnityEngine.Quaternion)">
-      <summary>
-            Set the Trackable that is used to initialize Smart Terrain.
-            Use occluderMin and occluderMax to specify an occluder box that will serve as a mask for plane finding.
-            offsetToOccluderOrigin and rotationToOccluderOrigin define a translational offset and rotation of the occluder volume to the initialization target.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.GetInitializationTarget(UnityEngine.Vector3@,UnityEngine.Vector3@)">
-      <summary>
-            Returns the trackable used for initialization plus additional initialization data.
-            Returns null if no initialization target has been defined.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTarget.GetInitializationTarget(UnityEngine.Vector3@,UnityEngine.Vector3@,UnityEngine.Vector3@,UnityEngine.Quaternion@)">
-      <summary>
-            Returns the trackable used for initialization plus additional initialization data, including the occluder offset if defined
-            Returns null if no initialization target has been defined.
-            </summary>
-    </member>
-    <member name="T:Vuforia.ReconstructionFromTargetBehaviour">
-      <summary>
-            This Monobehaviour supplements the ReconstructionBehaviour with target initialization specific functionality
-            </summary>
-    </member>
-    <member name="P:Vuforia.ReconstructionFromTargetBehaviour.ReconstructionBehaviour">
-      <summary>
-            Reference to the ReconstructionBehaviour that this ReconstructionFromTargetBehaviour initializes.
-            </summary>
-    </member>
-    <member name="P:Vuforia.ReconstructionFromTargetBehaviour.ReconstructionFromTarget">
-      <summary>
-            Returns a ReconstructionFromTarget object that can be configured to be initialized with a specific target
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionFromTargetBehaviour.Initialize">
-      <summary>
-            This will initialize the reconstruction and add it to the builder if configured.
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainBuilder">
-      <summary>
-            The SmartTerrainBuilder controls the smart terrain generation and tracking sub-system of Vuforia.
-            It generates props and surfaces for added reconstructions.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.Init">
-      <summary>
-            Initializes the SmartTerrainBuilder.
-            This is automatically called from the SmartTerrainTrackerBehaviour
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.Deinit">
-      <summary>
-            Deinitializes the SmartTerrainBuilder.
-            This is automatically called from the SmartTerrainTrackerBehaviour
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.GetReconstructions">
-      <summary>
-            Returns previously added Reconstructions
-            Automatically called from the ReconstructionFromTarget or ReconstructionFromEnvironment Behaviours
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.CreateReconstruction``1">
-      <summary>
-            Factory method to create reconstruction objects
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.AddReconstruction(Vuforia.ReconstructionBehaviour)">
-      <summary>
-            Adds a reconstruction to the builder. This will start the reconstruction.
-            If the Reconstruction has "Automatic start" selected in the inspector, this will be called automatically.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.RemoveReconstruction(Vuforia.ReconstructionBehaviour)">
-      <summary>
-            Removes a previously added reconstruction to the builder. This will stop the reconstruction.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainBuilder.DestroyReconstruction(Vuforia.Reconstruction)">
-      <summary>
-            Cleans up a previously created reconstruction object
-            Automatically called from the ReconstructionFromTarget or ReconstructionFromEnvironment Behaviours
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainInitializationInfo">
-      <summary>
-            Simple struct containing information about how smart terrain
-            was initialized.
-            Currently empty, but can be extended in the future without breaking the API.
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainTrackableBehaviour">
-      <summary>
-            This class serves both as an augmentation definition for a smart terrain trackable in the editor
-            as well as the reconstructed and tracked trackable at runtime
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackableBehaviour.SmartTerrainTrackable">
-      <summary>
-            The smart terrain trackable that this behaviour represents
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackableBehaviour.AutomaticUpdatesDisabled">
-      <summary>
-            If automatic mesh and collider updates have been disabled for this object.
-            Returns false by default.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTrackableBehaviour.UpdateMeshAndColliders">
-      <summary>
-            Updates the mesh based on the current smart terrain trackable
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTrackableBehaviour.SetAutomaticUpdatesDisabled(System.Boolean)">
-      <summary>
-            Can be used to explicitly disable automatic mesh and collider updates for individual objects.
-            This will only disable updates to the Unity geometry, but internally these objects will keep getting refined
-            until SmartTerrainTracker.StopMeshUpdates() is called.
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainTrackerARController">
-      <summary>
-            This is the main behaviour class that manages the smart terrain tracker
-            It comes as a component of the ARCamera prefab but can be use on any other game object as well
-            It is important that at any given time, only one instance of this script exists in the scene.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTrackerARController.RegisterTrackerStartedCallback(System.Action)">
-      <summary>
-            Registers a callback that is called when the tracker has been started
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTrackerARController.UnregisterTrackerStartedCallback(System.Action)">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="T:Vuforia.SurfaceBehaviour">
-      <summary>
-            This class serves both as an augmentation definition for a smart terrain surface in the editor
-            as well as the reconstructed and tracked surface at runtime
-            </summary>
-    </member>
-    <member name="P:Vuforia.SurfaceBehaviour.Surface">
-      <summary>
-            The surface trackable that this behaviour represents
-            </summary>
-    </member>
     <member name="T:Vuforia.CylinderTarget">
       <summary>
             A trackable that represents a cylinder or conical object
@@ -2116,7 +2047,8 @@
     </member>
     <member name="M:Vuforia.DataSet.Exists(System.String)">
       <summary>
-            Checks if a data set exists at the default "StreamingAssets/QCAR" directory.
+            Checks if a data set exists at the default "StreamingAssets/QCAR"
+            or "StreamingAssets/Vuforia" directory.
             </summary>
     </member>
     <member name="M:Vuforia.DataSet.Exists(System.String,Vuforia.VuforiaUnity.StorageType)">
@@ -2193,21 +2125,6 @@
             This is the base class for all trackables that are part of a dataset
             </summary>
     </member>
-    <member name="M:Vuforia.DataSetTrackableBehaviour.SetAsSmartTerrainInitializationTarget">
-      <summary>
-            This methods sets the current target as the initialization target on the SmartTerrainTracker
-            using the configuration set in the inspector. 
-            Otherwise please use the SmartTerrainTracker.SetInitializationTarget API.
-            This method will be automatically called on detection of this target, but only if the SmartTerrainTracker
-            a) has not been started yet
-            b) has been reset (and not restarted)
-            To implement a different behaviour, this method can be used e.g. from a TrackableEventHandler.
-            E.g. if a different initializaiton target is detected while Smart Terrain is active, the tracker could be
-            stopped and reset, and then this method called to reinitialize Smart Terrain from the new target.
-            </summary>
-      <returns>
-      </returns>
-    </member>
     <member name="T:Vuforia.ObjectTarget">
       <summary>
             A trackable that represents a ObjectTarget object
@@ -2221,6 +2138,11 @@
     <member name="M:Vuforia.ObjectTarget.StopExtendedTracking">
       <summary>
             Stop extended tracking. Target will only be tracked when it is visible.
+            </summary>
+    </member>
+    <member name="M:Vuforia.ObjectTarget.IsExtendedTrackingStarted">
+      <summary>
+            Query if extended tracking is started.
             </summary>
     </member>
     <member name="M:Vuforia.ObjectTarget.GetSize">
@@ -2553,248 +2475,6 @@
     <member name="M:Vuforia.IVideoBackgroundEventHandler.OnVideoBackgroundConfigChanged">
       <summary>
             Called after the video background config has been changed
-            </summary>
-    </member>
-    <member name="T:Vuforia.Surface">
-      <summary>
-            A smart terrain trackable that is reconstructing a surface with props on top
-            </summary>
-    </member>
-    <member name="M:Vuforia.Surface.GetNavMesh">
-      <summary>
-            Get the nav mesh of this surface.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Surface.GetMeshBoundaries">
-      <summary>
-            Returns the line list that represents all boundaries.
-            Each consecutive pair of indices defines a line segment. As a whole this
-            defines a polygon that represents the outer extents of the Surface mesh.
-            The indices refer to points in the mesh.
-            </summary>
-    </member>
-    <member name="P:Vuforia.Surface.BoundingBox">
-      <summary>
-            Returns the axis-aligned bounding box of the ground mesh
-            The bounding box will change over time.
-            </summary>
-    </member>
-    <member name="M:Vuforia.Surface.GetArea">
-      <summary>
-            Calculates the area that is covered by the surface mesh (in scene units)
-            </summary>
-    </member>
-    <member name="T:Vuforia.ReconstructionBehaviour">
-      <summary>
-            This class represents a smart terrain reconstruction in Unity
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterInitializedCallback(System.Action{Vuforia.SmartTerrainInitializationInfo})">
-      <summary>
-            Registers a callback that is called when the reconstruction has been initialized
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterInitializedCallback(System.Action{Vuforia.SmartTerrainInitializationInfo})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterPropCreatedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Registers a callback that is called when a prop has been created.
-            Use this to associate newly created props with templates.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterPropCreatedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterPropUpdatedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Registers a callback that is called when the geometry of a prop has been updated
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterPropUpdatedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterPropDeletedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Registers a callback that is called when a Prop has been destroyed
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterPropDeletedCallback(System.Action{Vuforia.Prop})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterSurfaceCreatedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Registers a callback that is called when a surface has been created.
-            Use this to associate newly created surfaces with templates.
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterSurfaceCreatedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterSurfaceUpdatedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Registers a callback that is called when the geometry of a surface has been updated
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterSurfaceUpdatedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.RegisterSurfaceDeletedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Registers a callback that is called when a surface has been deleted
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.UnregisterSurfaceDeletedCallback(System.Action{Vuforia.Surface})">
-      <summary>
-            Unregisters a previously registered callback
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.AssociateProp(Vuforia.PropBehaviour,Vuforia.Prop)">
-      <summary>
-            Associate a Prop trackable with a behaviour. 
-            The template PropBehaviour is duplicated and associated with the given prop
-            Association will fail if the Prop has already been associated with another behaviour 
-            or if the template is not a child object of the Reconstruction game object
-            </summary>
-      <returns>null if association was not successful</returns>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.AssociateSurface(Vuforia.SurfaceBehaviour,Vuforia.Surface)">
-      <summary>
-            Associate a Surface trackable with a behaviour. 
-            The template SurfaceBehaviour is duplicated and associated with the given surface
-            Association will fail if the Surface has already been associated with another behaviour 
-            or if the template is not a child object of the Reconstruction game object
-            </summary>
-      <returns>null if association was not successful</returns>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.GetActiveProps">
-      <summary>
-            Returns all active Props
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.TryGetPropBehaviour(Vuforia.Prop,Vuforia.PropBehaviour@)">
-      <summary>
-            Get the behaviour that is associated with a currently tracked prop
-            </summary>
-      <param name="prop">trackable</param>
-      <param name="behaviour">resulting behaviour, might be null if specified prop is not associated to a behaviour</param>
-      <returns>returns true if behaviour exists for specified trackable</returns>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.GetActiveSurfaces">
-      <summary>
-            Returns all active Surfaces
-            </summary>
-    </member>
-    <member name="M:Vuforia.ReconstructionBehaviour.TryGetSurfaceBehaviour(Vuforia.Surface,Vuforia.SurfaceBehaviour@)">
-      <summary>
-            Get the behaviour that is associated with a currently tracked surface
-            </summary>
-      <param name="surface">trackable</param>
-      <param name="behaviour">resulting behaviour, might be null if specified surface is not associated to a behaviour</param>
-      <returns>returns true if behaviour exists for specified trackable</returns>
-    </member>
-    <member name="T:Vuforia.Prop">
-      <summary>
-            A 3D object - prop - which is reconstructed as part of smart terrain
-            </summary>
-    </member>
-    <member name="P:Vuforia.Prop.BoundingBox">
-      <summary>
-            The bounding box of the smart terrain trackable, oriented around the y axis
-            </summary>
-    </member>
-    <member name="T:Vuforia.PropBehaviour">
-      <summary>
-            This class serves both as an augmentation definition for a smart terrain prop in the editor
-            as well as the reconstructed and tracked prop at runtime
-            </summary>
-    </member>
-    <member name="P:Vuforia.PropBehaviour.Prop">
-      <summary>
-            The prop trackable that this behaviour augments
-            </summary>
-    </member>
-    <member name="M:Vuforia.PropBehaviour.UpdateMeshAndColliders">
-      <summary>
-            Updates the mesh based on the current prop trackable
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainTrackable">
-      <summary>
-            A smart terrain trackable which is reconstructed as part of the smart terrain
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackable.MeshRevision">
-      <summary>
-            Get the mesh revision, which is increased whenever the geometry of the smart terrain trackable is updated.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTrackable.GetMesh">
-      <summary>
-            Get the mesh of the smart terrain trackable.
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackable.LocalPosition">
-      <summary>
-            Get the local 3D position of the smart terrain trackable relative to the parent
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackable.Parent">
-      <summary>
-            The parent trackable in the Smart Terrain scene graph hierarchy.
-            If this is the root node, Parent is null
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTrackable.Children">
-      <summary>
-            All child trackables in beneath this node in the Smart Terrain scene graph hierarchy.
-            </summary>
-    </member>
-    <member name="T:Vuforia.SmartTerrainTracker">
-      <summary>
-            This class handles the Smart Terrain tracker and builder
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTracker.ScaleToMillimeter">
-      <summary>
-            The scaling factor for SmartTerrain trackables from scene units into millimeters
-            </summary>
-    </member>
-    <member name="P:Vuforia.SmartTerrainTracker.SmartTerrainBuilder">
-      <summary>
-            Returns the SmartTerrainBuilder Instance 
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTracker.SetScaleToMillimeter(System.Single)">
-      <summary>
-            Set the scaling factor for SmartTerrain trackables from scene units into millimeters.
-            The default scaling factor is 1.0.
-            Returns false if the tracker is not in the stopped state, true if the scale is non-zero and
-            we are able to set the scale factor.
-            </summary>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTracker.Start">
-      <summary>
-            Starts the tracker.
-            </summary>
-      <returns>
-      </returns>
-    </member>
-    <member name="M:Vuforia.SmartTerrainTracker.Stop">
-      <summary>
-            Stops the tracker.
             </summary>
     </member>
     <member name="T:Vuforia.StateManager">
@@ -4053,6 +3733,12 @@
             The TrackableResult was tracked while not being visible
             </summary>
     </member>
+    <member name="F:Vuforia.TrackableBehaviour.Status.DEGRADED">
+      <summary>
+            The TrackableResult has a pose of degraded
+            quality (only supported for device pose)
+            </summary>
+    </member>
     <member name="P:Vuforia.TrackableBehaviour.CurrentStatus">
       <summary>
             The tracking status of the TrackableBehaviour
@@ -4154,6 +3840,38 @@
             </summary>
     </member>
     <member name="M:Vuforia.TrackerManager.GetStateManager">
+      <summary>
+            Returns the state manager instance that can be used to access
+            all currently tracked TrackableBehaviours
+            </summary>
+    </member>
+    <member name="M:Vuforia.ITrackerManager.GetTracker``1">
+      <summary>
+            Returns the instance of the given tracker type
+            See the Tracker base class for a list of available tracker classes.
+            This function will return null if the tracker of the given type has
+            not been initialized.
+            </summary>
+    </member>
+    <member name="M:Vuforia.ITrackerManager.InitTracker``1">
+      <summary>
+            Initializes the tracker of the given type
+            Initializing a tracker must not be done when the CameraDevice
+            is initialized or started. This function will return null if the
+            CameraDevice is currently initialized.
+            </summary>
+    </member>
+    <member name="M:Vuforia.ITrackerManager.DeinitTracker``1">
+      <summary>
+            Deinitializes the tracker of the given type and frees any resources
+            used by the tracker.
+            Deinitializing a tracker must not be done when the CameraDevice
+            is initialized or started. This function will return false if the
+            tracker of the given type has not been initialized or if the
+            CameraDevice is currently initialized.
+            </summary>
+    </member>
+    <member name="M:Vuforia.ITrackerManager.GetStateManager">
       <summary>
             Returns the state manager instance that can be used to access
             all currently tracked TrackableBehaviours
