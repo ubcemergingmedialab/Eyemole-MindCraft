@@ -373,6 +373,7 @@
     <Compile Include="Assets\Scripts\ChangeSkyboxColour.cs" />
     <Compile Include="Assets\Scripts\ColourUtility.cs" />
     <Compile Include="Assets\Scripts\ControlMusicWithEEG.cs" />
+    <Compile Include="Assets\Scripts\CreateCube.cs" />
     <Compile Include="Assets\Scripts\CreateObject.cs" />
     <Compile Include="Assets\Scripts\CubeStateManager.cs" />
     <Compile Include="Assets\Scripts\EEGData.cs" />

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChangeSkyboxColour : MonoBehaviour {
 
-	private Color DAY_COLOUR = new Color(204 / 255, 255 /255, 204 / 255);
+	private Color DAY_COLOUR = new Color(244 / 255, 255 /255, 244 / 255);
 	private Color NIGHT_COLOUR = new Color(0.015f, 0.00549f, 0.12156f);
 	private float alphaThreshold = 0.05f;
 	private float currentColour = 0.5f;
